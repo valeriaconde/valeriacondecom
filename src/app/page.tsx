@@ -1,32 +1,16 @@
 import Link from "next/link";
-
-const navLinks = ["About", "Writing", "Projects", "Life", "Contact"];
+import Nav from "./components/Nav";
 
 const sections = [
   { href: "/writing", label: "Writing", description: "Fiction, essays, and words in progress" },
   { href: "/projects", label: "Projects", description: "Code, builds, and experiments" },
-  { href: "/hobbies", label: "Life", description: "Tennis, knitting, travel, and more" },
+  { href: "/life", label: "Life", description: "Tennis, knitting, travel, and more" },
 ];
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background font-sans">
-      <nav className="flex items-center justify-between px-8 py-6 sm:px-16">
-        <span className="font-heading text-2xl font-medium tracking-wide text-foreground">
-          VC
-        </span>
-        <div className="hidden sm:flex gap-8 text-sm tracking-wide text-muted-text">
-          {navLinks.map((item) => (
-            <Link
-              key={item}
-              href={`/${item.toLowerCase()}`}
-              className="hover:text-foreground transition-colors duration-200"
-            >
-              {item}
-            </Link>
-          ))}
-        </div>
-      </nav>
+      <Nav />
 
       <main className="flex flex-col items-center text-center px-8 pt-20 pb-28 sm:px-16">
         <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-8">
