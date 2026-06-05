@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-const navLinks = ["About", "Writing", "Projects", "Hobbies", "Contact"];
+const navLinks = ["About", "Writing", "Projects", "Life", "Contact"];
 
 const sections = [
   { href: "/writing", label: "Writing", description: "Fiction, essays, and words in progress" },
   { href: "/projects", label: "Projects", description: "Code, builds, and experiments" },
-  { href: "/hobbies", label: "Hobbies", description: "Tennis, knitting, traveling, and more" },
+  { href: "/hobbies", label: "Life", description: "Tennis, knitting, travel, and more" },
 ];
 
 export default function Home() {
@@ -30,13 +30,13 @@ export default function Home() {
 
       <main className="flex flex-col items-center text-center px-8 pt-20 pb-28 sm:px-16">
         <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-8">
-          Law · Code · Fiction
+          Law · Code · Literature
         </p>
         <h1 className="font-heading text-6xl sm:text-8xl font-light tracking-tight text-foreground leading-none mb-6">
           Valeria Conde
         </h1>
         <p className="font-heading text-xl sm:text-2xl italic text-muted-text font-light max-w-lg leading-relaxed">
-          Navigating the intersection of law, technology, and storytelling.
+          Navigating the intersection of law, technology, and literature.
         </p>
 
         <div className="mt-12 flex flex-wrap justify-center gap-3">
