@@ -75,6 +75,35 @@ export default function About() {
             </p>
           </div>
         </div>
+
+        <hr className="border-border my-14" />
+
+        {/* Timeline */}
+        <div>
+          <p className="text-xs tracking-[0.25em] uppercase text-muted-text mb-10">Timeline</p>
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
+            <div className="flex flex-col gap-8">
+              {[
+                { year: "2026", event: "Launched valeriaconde.com — an ongoing experiment." },
+                { year: "2025", event: "Traveled to Tokyo, Lisbon, and Mexico City. Knitted three sweaters." },
+                { year: "2024", event: "Fell properly in love with tennis. Started playing three times a week." },
+                { year: "2023", event: "Shipped my first real project in production code. Terrifying. Exhilarating." },
+                { year: "2022", event: "Taught myself to code — started with Python, moved to TypeScript." },
+                { year: "2020", event: "Finished law school. Graduated into a very strange world." },
+                { year: "2018", event: "First trip alone. Arrived in Buenos Aires with one bag and no plan." },
+                { year: "2016", event: "Started university. Chose law. Also started keeping a reading log." },
+              ].map(({ year, event }) => (
+                <div key={year} className="pl-8 relative">
+                  <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-accent bg-background" />
+                  <p className="text-xs tracking-wide text-accent font-medium mb-1">{year}</p>
+                  <p className="text-sm text-foreground leading-relaxed">{event}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </main>
 
       <footer className="text-center pb-10 text-xs text-muted-text tracking-wide">
