@@ -48,10 +48,10 @@ export default function Poll() {
   const total = question.options.reduce((s, o) => s + o.vote_count, 0);
 
   return (
-    <div className="p-7 rounded-2xl border border-border bg-white">
-      <p className="text-xs tracking-[0.2em] uppercase text-muted-text mb-3">Quick poll</p>
-      <h3 className="font-heading text-xl font-medium text-foreground mb-5">{question.question}</h3>
-      <div className="flex flex-col gap-2">
+    <div className="p-5 rounded-2xl border border-border bg-white">
+      <p className="text-xs tracking-[0.2em] uppercase text-muted-text mb-2">Poll</p>
+      <h3 className="font-heading text-lg font-medium text-foreground mb-3">{question.question}</h3>
+      <div className="flex flex-col gap-1.5">
         {question.options.map((opt) => {
           const pct = total > 0 ? Math.round((opt.vote_count / total) * 100) : 0;
           const isChosen = voted === opt.id;
@@ -60,7 +60,7 @@ export default function Poll() {
               key={opt.id}
               onClick={() => vote(opt.id)}
               disabled={!!voted}
-              className={`relative text-left px-4 py-3 rounded-xl border overflow-hidden transition-all duration-200 ${
+              className={`relative text-left px-3 py-2 rounded-lg border overflow-hidden transition-all duration-200 ${
                 voted
                   ? isChosen
                     ? "border-accent"
@@ -75,17 +75,17 @@ export default function Poll() {
                 />
               )}
               <span className="relative flex items-center justify-between gap-3">
-                <span className={`text-sm ${isChosen ? "text-accent font-medium" : "text-foreground"}`}>
+                <span className={`text-xs ${isChosen ? "text-accent font-medium" : "text-foreground"}`}>
                   {opt.option_text}
                 </span>
-                {voted && <span className="text-xs text-muted-text">{pct}%</span>}
+                {voted && <span className="text-[11px] text-muted-text">{pct}%</span>}
               </span>
             </button>
           );
         })}
       </div>
       {voted && (
-        <p className="mt-4 text-center text-xs text-muted-text">
+        <p className="mt-3 text-center text-[11px] text-muted-text">
           {total} {total === 1 ? "vote" : "votes"} total
         </p>
       )}

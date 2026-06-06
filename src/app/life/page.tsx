@@ -62,24 +62,61 @@ export default function Life() {
 
         <hr className="border-border my-14" />
 
-        {/* Photography teaser */}
-        <Link
-          href="/photography"
-          className="group flex items-center justify-between gap-6 p-7 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
-        >
-          <div className="flex gap-5 items-center">
-            <div className="shrink-0 w-12 h-12 rounded-xl bg-muted-bg border border-border flex items-center justify-center text-xl">
-              📷
+        <div className="flex flex-col gap-4">
+          <Link
+            href="/lists"
+            className="group flex items-center justify-between gap-6 p-7 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
+          >
+            <div className="flex gap-5 items-center">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-muted-bg border border-border flex items-center justify-center text-xl">
+                📝
+              </div>
+              <div>
+                <h2 className="font-heading text-2xl font-medium text-foreground group-hover:text-accent transition-colors">
+                  Lists
+                </h2>
+                <p className="text-sm text-muted-text">Because lists are fun</p>
+              </div>
             </div>
-            <div>
-              <h2 className="font-heading text-2xl font-medium text-foreground group-hover:text-accent transition-colors">
-                Photography
-              </h2>
-              <p className="text-sm text-muted-text">Film and digital — scenes I wanted to keep</p>
+            <span className="text-muted-text group-hover:text-accent transition-colors text-lg shrink-0">→</span>
+          </Link>
+
+          <Link
+            href="/travel"
+            className="group flex items-center justify-between gap-6 p-7 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
+          >
+            <div className="flex gap-5 items-center">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-muted-bg border border-border flex items-center justify-center text-xl">
+                ✈️
+              </div>
+              <div>
+                <h2 className="font-heading text-2xl font-medium text-foreground group-hover:text-accent transition-colors">
+                  Travel
+                </h2>
+                <p className="text-sm text-muted-text">Trips, stories, and photographs</p>
+              </div>
             </div>
-          </div>
-          <span className="text-muted-text group-hover:text-accent transition-colors text-lg shrink-0">→</span>
-        </Link>
+            <span className="text-muted-text group-hover:text-accent transition-colors text-lg shrink-0">→</span>
+          </Link>
+
+          <Link
+            href="/photography"
+            className="group flex items-center justify-between gap-6 p-7 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
+          >
+            <div className="flex gap-5 items-center">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-muted-bg border border-border flex items-center justify-center text-xl">
+                📷
+              </div>
+              <div>
+                <h2 className="font-heading text-2xl font-medium text-foreground group-hover:text-accent transition-colors">
+                  Photography
+                </h2>
+                <p className="text-sm text-muted-text">Film and digital — scenes I wanted to keep</p>
+              </div>
+            </div>
+            <span className="text-muted-text group-hover:text-accent transition-colors text-lg shrink-0">→</span>
+          </Link>
+        </div>
       </main>
 
       <footer className="text-center pb-10 text-xs text-muted-text tracking-wide">
