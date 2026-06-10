@@ -88,11 +88,11 @@ create policy "public read notes" on notes for select using (true);
 do $$
 declare q_id uuid;
 begin
-  insert into poll_questions (question) values ('What should I write about next?') returning id into q_id;
+  insert into poll_questions (question) values ('What's your favorite genre'?') returning id into q_id;
   insert into poll_options (question_id, option_text, display_order) values
-    (q_id, 'A deep dive into AI and the law', 1),
-    (q_id, 'Travel stories from Tokyo', 2),
-    (q_id, 'A short story', 3),
-    (q_id, 'My reading list for the year', 4);
+    (q_id, 'Literary fiction', 1),
+    (q_id, 'Sci fi', 2),
+    (q_id, 'Fantasy', 3),
+    (q_id, 'Horror', 4);
 end;
 $$;

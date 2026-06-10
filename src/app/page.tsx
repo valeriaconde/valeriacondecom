@@ -23,7 +23,7 @@ export default function Home() {
       <Nav />
 
       {/* Hero */}
-      <section className="flex flex-col items-center text-center px-8 pt-20 pb-28 sm:px-16">
+      <section className="flex flex-col items-center text-center px-8 pt-20 pb-40 sm:px-16">
         <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-8">
           Law · Code · Literature
         </p>
