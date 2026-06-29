@@ -1,7 +1,8 @@
 import Nav from "../components/Nav";
+import QuotesLyrics from "../components/QuotesLyrics";
 
 export const metadata = {
-  title: "Writing — Valeria Conde",
+  title: "Literature — Valeria Conde",
 };
 
 type Piece = {
@@ -67,9 +68,9 @@ export default function Writing() {
       <Nav />
 
       <main className="max-w-3xl mx-auto px-8 sm:px-16 pt-16 pb-28">
-        <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-4">Writing</p>
+        <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-4">Literature</p>
         <h1 className="font-heading text-5xl sm:text-6xl font-light tracking-tight text-foreground leading-none mb-4">
-          Words
+          Literature
         </h1>
         <p className="text-base text-muted-text leading-relaxed mb-14 max-w-lg">
           Fiction, essays, and criticism. Work in progress — everything here is something I
@@ -100,6 +101,11 @@ export default function Writing() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-20">
+          <p className="text-xs tracking-[0.35em] uppercase text-muted-text mb-8">Words I love</p>
+          <QuotesLyrics />
         </div>
       </main>
 
