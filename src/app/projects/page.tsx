@@ -1,7 +1,7 @@
 import Nav from "../components/Nav";
 
 export const metadata = {
-  title: "Projects — Valeria Conde",
+  title: "Code — Valeria Conde",
 };
 
 type Project = {
@@ -55,7 +55,7 @@ export default function Projects() {
       <Nav />
 
       <main className="max-w-3xl mx-auto px-8 sm:px-16 pt-16 pb-28">
-        <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-4">Projects</p>
+        <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-4">Code</p>
         <h1 className="font-heading text-5xl sm:text-6xl font-light tracking-tight text-foreground leading-none mb-4">
           Builds
         </h1>

@@ -1,6 +1,12 @@
 import Link from "next/link";
 
-const navLinks = ["About", "Writing", "Projects", "Life", "Contact"];
+const navLinks = [
+  { label: "About", href: "/about" },
+  { label: "Literature", href: "/writing" },
+  { label: "Code", href: "/projects" },
+  { label: "Life", href: "/life" },
+  { label: "Contact", href: "/contact" },
+];
 
 export default function Nav() {
   return (
@@ -9,13 +15,13 @@ export default function Nav() {
         VC
       </Link>
       <div className="hidden sm:flex gap-8 text-sm tracking-wide text-muted-text">
-        {navLinks.map((item) => (
+        {navLinks.map(({ label, href }) => (
           <Link
-            key={item}
-            href={`/${item.toLowerCase()}`}
+            key={href}
+            href={href}
             className="hover:text-foreground transition-colors duration-200"
           >
-            {item}
+            {label}
           </Link>
         ))}
       </div>

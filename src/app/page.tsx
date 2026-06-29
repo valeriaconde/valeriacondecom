@@ -1,147 +1,166 @@
 import Link from "next/link";
 import Nav from "./components/Nav";
 import Poll from "./components/Poll";
-import NotesPreview from "./components/NotesPreview";
+import HeroAnnotations from "./components/HeroAnnotations";
 
-// ── Edit these to update your currentlies ──────────────────────────
 const currentlies = [
-  { emoji: "📖", label: "Reading", value: "My Brilliant Friend - Elena Ferrante" },
+  { emoji: "📖", label: "Reading", value: "My Brilliant Friend — Elena Ferrante" },
   { emoji: "🎬", label: "Watching", value: "The Sopranos" },
   { emoji: "🎵", label: "Listening", value: "Fuerza Regida" },
 ];
-// ────────────────────────────────────────────────────────────────────
 
 const sections = [
-  { href: "/writing",  label: "Writing",  description: "Fiction, essays, and words in progress" },
-  { href: "/projects", label: "Projects", description: "Code, builds, and experiments" },
-  { href: "/life",     label: "Life",     description: "Tennis, knitting, and everything else" },
+  {
+    href: "/writing",
+    index: "01",
+    label: "Literature",
+    description: "Writing, reading, and important words.",
+  },
+  {
+    href: "/projects",
+    index: "02",
+    label: "Code",
+    description: "Making things exist.",
+  },
 ];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="bg-background font-sans">
       <Nav />
 
-      {/* Hero */}
-      <section className="flex flex-col items-center text-center px-8 pt-20 pb-40 sm:px-16">
-        <p className="text-xs tracking-[0.3em] uppercase text-muted-text mb-8">
-          Law · Code · Literature
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-8 sm:px-16 pb-24">
+        <p className="text-xs tracking-[0.35em] uppercase text-muted-text mb-10">
+          random parts of myself
         </p>
-        <h1 className="font-heading text-6xl sm:text-8xl font-light tracking-tight text-foreground leading-none mb-6">
+        <h1 className="font-heading text-[clamp(3rem,7vw,6rem)] font-light tracking-tight text-foreground leading-none mb-8 whitespace-nowrap">
           Valeria Conde
         </h1>
-        <p className="font-heading text-xl sm:text-2xl italic text-muted-text font-light max-w-lg leading-relaxed">
-          Navigating the intersection of law, technology, and literature.
+        <p className="font-heading text-xl sm:text-3xl italic text-muted-text font-light max-w-xl leading-relaxed mb-14">
+          Software engineer, lawyer, writer, reader, tennis player, tea enjoyer, dog owner, & lover
         </p>
-        <div className="mt-12 flex flex-wrap justify-center gap-3">
-          <Link
-            href="/about"
-            className="px-7 py-3 bg-accent text-white text-sm tracking-wide rounded-full hover:bg-[#a84f70] transition-colors duration-200"
+        <HeroAnnotations currentlies={currentlies} />
+      </section>
+
+      {/* ── Divider ──────────────────────────────────────────── */}
+      <div className="w-full h-px bg-border" />
+
+      {/* ── Sections ─────────────────────────────────────────── */}
+      {sections.map(({ href, index, label, description }, i) => (
+        <Link key={href} href={href} className="group block">
+          <div
+            className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 px-8 sm:px-20 lg:px-32 py-24 transition-colors duration-300 hover:bg-muted-bg ${
+              i < sections.length - 1 ? "border-b border-border" : ""
+            }`}
           >
-            About me
-          </Link>
-          <Link
-            href="/writing"
-            className="px-7 py-3 border border-border text-foreground text-sm tracking-wide rounded-full hover:bg-muted-bg transition-colors duration-200"
-          >
-            My writing
-          </Link>
+            <div className="flex items-start gap-8 sm:gap-14">
+              <span className="text-xs tracking-[0.25em] text-muted-text mt-2 shrink-0">{index}</span>
+              <div>
+                <h2 className="font-heading text-[clamp(3rem,8vw,7rem)] font-light tracking-tight text-foreground leading-none mb-4 group-hover:text-accent transition-colors duration-300">
+                  {label}
+                </h2>
+                <p className="text-base text-muted-text max-w-md leading-relaxed">{description}</p>
+              </div>
+            </div>
+            <span className="text-3xl text-muted-text group-hover:text-accent group-hover:translate-x-2 transition-all duration-300 shrink-0">
+              →
+            </span>
+          </div>
+        </Link>
+      ))}
+
+      {/* ── Divider ──────────────────────────────────────────── */}
+      <div className="w-full h-px bg-border" />
+
+      {/* ── Recommendations ──────────────────────────────────── */}
+      <section className="relative overflow-hidden px-8 sm:px-20 lg:px-32 py-40 flex flex-col items-center text-center">
+        {/* Stickers — drop images into /public/stickers/ and list them here */}
+        {[
+          { src: "/stickers/sticker1.png", className: "absolute top-10 left-[6%] w-20 rotate-[-12deg]" },
+          { src: "/stickers/sticker2.png", className: "absolute top-16 right-[8%] w-16 rotate-[8deg]" },
+          { src: "/stickers/sticker3.png", className: "absolute bottom-12 left-[12%] w-14 rotate-[6deg]" },
+          { src: "/stickers/sticker4.png", className: "absolute bottom-10 right-[14%] w-18 rotate-[-9deg]" },
+          { src: "/stickers/sticker5.png", className: "absolute top-1/2 left-[3%] w-12 -translate-y-1/2 rotate-[4deg]" },
+          { src: "/stickers/sticker6.png", className: "absolute top-1/2 right-[3%] w-14 -translate-y-1/2 rotate-[-6deg]" },
+        ].map(({ src, className }) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img key={src} src={src} alt="" className={`${className} pointer-events-none select-none`} />
+        ))}
+
+        <p className="text-xs tracking-[0.35em] uppercase text-muted-text mb-8 relative z-10">Curated</p>
+        <h2 className="font-heading text-[clamp(3rem,8vw,6.5rem)] font-light tracking-tight text-foreground leading-none mb-6 relative z-10">
+          Recommendations
+        </h2>
+        <p className="font-heading text-xl sm:text-2xl italic text-muted-text font-light mb-12 relative z-10">
+          Stuff I loved and I think you will too 💕
+        </p>
+        <Link
+          href="/recommendations"
+          className="relative z-10 px-8 py-3.5 border border-border text-foreground text-sm tracking-widest uppercase rounded-full hover:bg-muted-bg transition-colors duration-200"
+        >
+          See recommendations
+        </Link>
+      </section>
+
+      {/* ── Divider ──────────────────────────────────────────── */}
+      <div className="w-full h-px bg-border" />
+
+      {/* ── Poll + Guestbook ─────────────────────────────────── */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-border">
+        <div className="px-8 sm:px-20 lg:px-16 xl:px-24 py-32">
+          <p className="text-xs tracking-[0.35em] uppercase text-muted-text mb-12">Community</p>
+          <Poll />
+        </div>
+        <div className="px-8 sm:px-20 lg:px-16 xl:px-24 py-32 flex flex-col justify-between">
+          <div>
+            <p className="text-xs tracking-[0.35em] uppercase text-muted-text mb-12">Say hello</p>
+            <h2 className="font-heading text-[clamp(2.5rem,5vw,4rem)] font-light text-foreground leading-tight mb-6">
+              Leave your<br />mark
+            </h2>
+            <p className="text-base text-muted-text leading-relaxed max-w-sm">
+              Sign the guestbook. Tell me where you found this, what you think, or just say hi.
+            </p>
+          </div>
+          <div className="mt-12 flex flex-wrap gap-4">
+            <Link
+              href="/guestbook"
+              className="px-8 py-3.5 bg-accent text-white text-sm tracking-widest uppercase rounded-full hover:bg-[#a84f70] transition-colors duration-200"
+            >
+              Guestbook
+            </Link>
+            <Link
+              href="/recommendations"
+              className="px-8 py-3.5 border border-border text-foreground text-sm tracking-widest uppercase rounded-full hover:bg-muted-bg transition-colors duration-200"
+            >
+              Recommendations
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Three-column layout */}
-      <div className="max-w-6xl mx-auto px-8 sm:px-12 pt-16 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr_240px] gap-10">
-
-          {/* Left — Right now + Recommendations */}
-          <aside className="order-2 lg:order-1 flex flex-col gap-8">
-            <div>
-              <p className="text-xs tracking-[0.25em] uppercase text-muted-text mb-5">Right now</p>
-              <div className="flex flex-col gap-4">
-                {currentlies.map(({ emoji, label, value }) => (
-                  <div key={label} className="flex gap-3 items-start">
-                    <span className="text-base shrink-0 mt-0.5">{emoji}</span>
-                    <div>
-                      <p className="text-[11px] tracking-wide uppercase text-muted-text leading-none mb-1">
-                        {label}
-                      </p>
-                      <p className="text-sm text-foreground leading-snug">{value}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <Link
-              href="/recommendations"
-              className="group block p-5 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
-            >
-              <h2 className="font-heading text-lg font-medium mb-1 group-hover:text-accent transition-colors duration-200">
-                My recommendations
-              </h2>
-              <p className="text-xs text-muted-text leading-relaxed">
-                Books, films, music, and more
-              </p>
-            </Link>
-
-            <Link
-              href="/guestbook"
-              className="group block p-5 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
-            >
-              <h2 className="font-heading text-lg font-medium mb-1 group-hover:text-accent transition-colors duration-200">
-                Guestbook
-              </h2>
-              <p className="text-xs text-muted-text leading-relaxed">
-                Leave your mark
-              </p>
-            </Link>
-
-            <Poll />
-          </aside>
-
-          {/* Center — sections hub */}
-          <main className="order-1 lg:order-2 flex flex-col gap-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sections.map(({ href, label, description }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="group p-6 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200"
-                >
-                  <h2 className="font-heading text-xl font-medium mb-1.5 group-hover:text-accent transition-colors duration-200">
-                    {label}
-                  </h2>
-                  <p className="text-xs text-muted-text leading-relaxed">{description}</p>
-                </Link>
-              ))}
-              {/* Problem Solver — full width */}
-              <Link
-                href="/problem-solver"
-                className="group sm:col-span-2 lg:col-span-3 p-6 rounded-2xl border border-border bg-white hover:bg-muted-bg transition-colors duration-200 flex items-center justify-between gap-6"
-              >
-                <div>
-                  <h2 className="font-heading text-xl font-medium mb-1.5 group-hover:text-accent transition-colors duration-200">
-                    Problem Solver
-                  </h2>
-                  <p className="text-xs text-muted-text leading-relaxed">
-                    Tell me what you&apos;re dealing with. I&apos;ll think it through and publish a solution.
-                  </p>
-                </div>
-                <span className="shrink-0 text-xl text-muted-text group-hover:text-accent transition-colors">→</span>
-              </Link>
-            </div>
-          </main>
-
-          {/* Right — Notes preview */}
-          <aside className="order-3 lg:order-3">
-            <NotesPreview />
-          </aside>
-
+      {/* ── Fun ──────────────────────────────────────────────── */}
+      <Link href="/life" className="group block">
+        <div className="relative overflow-hidden flex flex-col items-center justify-center text-center px-8 sm:px-20 lg:px-32 py-16 bg-foreground transition-colors duration-700 hover:bg-[#1a1a1a]">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+            style={{ background: "radial-gradient(ellipse at center, rgba(180,80,110,0.12) 0%, transparent 70%)" }}
+          />
+          <h2 className="font-heading text-[clamp(2rem,5vw,4rem)] font-light tracking-[0.2em] text-background leading-none relative z-10
+            opacity-40 group-hover:opacity-100 transition-opacity duration-500
+            [text-shadow:0_0_80px_rgba(255,255,255,0.05)] group-hover:[text-shadow:0_0_120px_rgba(180,80,110,0.3)]">
+            fun
+          </h2>
+          <span className="mt-4 text-xs tracking-[0.5em] uppercase text-muted-text opacity-0 group-hover:opacity-60 transition-opacity duration-500 relative z-10">
+            enter
+          </span>
         </div>
-      </div>
+      </Link>
 
-      <footer className="text-center pb-10 text-xs text-muted-text tracking-wide">
-        © 2026 Valeria Conde
+      {/* ── Footer ───────────────────────────────────────────── */}
+      <div className="w-full h-px bg-border" />
+      <footer className="flex items-center justify-between px-8 sm:px-20 lg:px-32 py-10 text-xs text-muted-text tracking-wide">
+        <span>© 2026 Valeria Conde</span>
+        <span>Law · Code · Literature</span>
       </footer>
     </div>
   );
