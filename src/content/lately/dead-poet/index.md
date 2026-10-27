@@ -1,5 +1,5 @@
 ---
 date: 2026-01-22
 photos:
-  - ./dead-poet.jpg
+  - ./dead-poet.webp
 ---

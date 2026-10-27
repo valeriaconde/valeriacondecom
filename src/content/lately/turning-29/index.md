@@ -1,8 +1,8 @@
 ---
 date: 2026-01-17
 photos:
-  - ./birthday.png
-  - ./january-birthdays.png
+  - ./birthday.webp
+  - ./january-birthdays.webp
 ---
 
 i am now 29

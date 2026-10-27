@@ -1,7 +1,7 @@
 ---
 date: 2026-04-08
 photos:
-  - ./knitting.jpg
+  - ./knitting.webp
 ---
 
 i love this color

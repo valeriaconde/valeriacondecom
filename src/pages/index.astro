@@ -43,6 +43,7 @@ const presentPreviews = showPresentsOnHomepage ? (await getPresents()).slice(0, 
         <Image
           src={heroPhoto}
           alt=""
+          width={1320}
           widths={[640, 960, 1320]}
           sizes="100vw"
           loading="eager"
@@ -106,7 +107,7 @@ const presentPreviews = showPresentsOnHomepage ? (await getPresents()).slice(0, 
                 <div data-float>
                   <div class="aspect-square overflow-hidden rounded-2xl border-4 border-white bg-white shadow-[0_20px_40px_-18px_rgb(29_24_32/0.35)]">
                     {p.localImage ? (
-                      <Image src={p.localImage} alt="" widths={p.localImage.format === 'svg' ? undefined : [300, 500]} sizes="200px" class="size-full object-cover" />
+                      <Image src={p.localImage} alt="" width={p.localImage.format === 'svg' ? undefined : 500} widths={p.localImage.format === 'svg' ? undefined : [300, 500]} sizes="200px" class="size-full object-cover" />
                     ) : p.remoteImage ? (
                       <img src={p.remoteImage} alt="" loading="lazy" referrerpolicy="no-referrer" class="size-full object-contain p-3" />
                     ) : (
@@ -156,6 +157,7 @@ const presentPreviews = showPresentsOnHomepage ? (await getPresents()).slice(0, 
                   <Image
                     src={image}
                     alt=""
+                    width={900}
                     widths={[300, 600, 900]}
                     sizes="(min-width: 1024px) 25vw, 50vw"
                     class="absolute inset-0 size-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"

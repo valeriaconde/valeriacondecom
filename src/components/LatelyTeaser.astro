@@ -32,7 +32,7 @@ const spans = ['sm:col-span-2 sm:row-span-2', '', '', 'sm:col-span-2'];
             return (
               <div class:list={['relative overflow-hidden rounded-2xl', spans[i]]}>
                 {cover ? (
-                  <Image src={cover} alt="" widths={cover.format === 'svg' ? undefined : [400, 800]} sizes="(min-width: 640px) 50vw, 50vw" class="size-full object-cover" />
+                  <Image src={cover} alt="" width={cover.format === 'svg' ? undefined : 800} widths={cover.format === 'svg' ? undefined : [400, 800]} sizes="(min-width: 640px) 50vw, 50vw" class="size-full object-cover" />
                 ) : songCover ? (
                   <img src={songCover} alt="" class="size-full object-cover" />
                 ) : kind === 'quote' ? (

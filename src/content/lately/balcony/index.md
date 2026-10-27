@@ -1,5 +1,5 @@
 ---
 date: 2026-04-08
 photos:
-  - ./balcony.jpg
+  - ./balcony.webp
 ---

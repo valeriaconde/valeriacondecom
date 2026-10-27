@@ -1,7 +1,7 @@
 ---
 date: 2026-04-09
 photos:
-  - ./cokes.jpg
+  - ./cokes.webp
 ---
 
 us in another universe

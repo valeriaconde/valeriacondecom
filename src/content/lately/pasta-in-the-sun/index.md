@@ -1,8 +1,8 @@
 ---
 date: 2026-04-10
 photos:
-  - ./pasta.jpg
-  - ./lunch.jpg
+  - ./pasta.webp
+  - ./lunch.webp
 ---
 
 ate pasta in the sun

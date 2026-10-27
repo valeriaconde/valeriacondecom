@@ -15,6 +15,7 @@ const { present: p } = Astro.props;
         <Image
           src={p.localImage}
           alt=""
+          width={p.localImage.format === 'svg' ? undefined : 1000}
           widths={p.localImage.format === 'svg' ? undefined : [400, 700, 1000]}
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           class="size-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
