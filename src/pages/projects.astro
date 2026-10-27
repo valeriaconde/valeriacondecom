@@ -1,0 +1,56 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { projects, type Project } from '@/data/projects';
+
+const statusDot: Record<Project['status'], string> = {
+  Live: 'bg-emerald-500',
+  'In progress': 'bg-amber-400',
+  Archive: 'bg-muted/50',
+};
+---
+
+<Base title="Code" description="Code, experiments, and things Valeria Conde made.">
+  <PageHeader
+    eyebrow="Code"
+    title="Making things"
+    accent="exist"
+    lead="Code, experiments, and things I made to scratch an itch. Spanning law, technology, and the occasional craft project."
+  />
+
+  <section class="container-x pb-32">
+    <div class="grid gap-5 md:grid-cols-2" data-reveal-stagger="0.1">
+      {
+        projects.map((project, i) => {
+          const Tag = project.href ? 'a' : 'div';
+          return (
+            <Tag
+              href={project.href}
+              target={project.href ? '_blank' : undefined}
+              rel={project.href ? 'noopener noreferrer' : undefined}
+              class="card group relative flex min-h-[18rem] flex-col justify-between overflow-hidden p-8 transition-[transform,box-shadow] duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:shadow-[0_24px_50px_-24px_rgb(31_23_34/0.3)]"
+            >
+              <span class="display pointer-events-none absolute -right-4 -bottom-10 text-[10rem] leading-none text-paper-2 transition-colors duration-500 group-hover:text-rose-soft" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div class="relative">
+                <div class="mb-6 flex items-center gap-2">
+                  <span class={`size-2 rounded-full ${statusDot[project.status]}`} />
+                  <span class="mono text-muted">{project.status}</span>
+                </div>
+                <h2 class="display-md mb-4">
+                  {project.title}
+                  {project.href && <span class="arrow-ne text-[0.6em] text-muted" aria-hidden="true">↗</span>}
+                </h2>
+                <p class="max-w-md text-muted">{project.description}</p>
+              </div>
+              <div class="relative mt-8 flex flex-wrap gap-2">
+                {project.tags.map((tag) => <span class="chip bg-card">{tag}</span>)}
+              </div>
+            </Tag>
+          );
+        })
+      }
+    </div>
+  </section>
+</Base>

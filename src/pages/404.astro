@@ -1,0 +1,16 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+
+<Base title="Not found">
+  <section class="container-x flex min-h-[80dvh] flex-col items-start justify-center pt-28 pb-20">
+    <p class="eyebrow mb-8" data-reveal="fade">404</p>
+    <h1 class="display-xl" data-split="chars">Lost?</h1>
+    <p class="lead mt-8 max-w-md" data-reveal data-delay="0.6">
+      This page doesn't exist (or it did, and I moved it). Not all those who wander are lost, though.
+    </p>
+    <div class="mt-10" data-reveal data-delay="0.75">
+      <a href="/" class="btn btn-primary" data-magnetic>Take me home <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</Base>

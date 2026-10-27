@@ -1,0 +1,59 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { rankings, rankingsText } from '@/data/rankings';
+import { langOf, tr } from '@/i18n';
+
+const lang = langOf(Astro.url);
+---
+
+<Base title={tr(rankingsText.title, lang)} description={tr(rankingsText.intro, lang)}>
+  <PageHeader title={tr(rankingsText.title, lang)} lead={tr(rankingsText.pageLead, lang)} leadHref={rankingsText.pageLeadHref}>
+    <nav class="mt-10 flex flex-wrap gap-2" aria-label="Categories" data-reveal data-load data-delay="0.45">
+      {
+        rankings.map((r) => (
+          <a href={`#${r.slug}`} class="btn btn-ghost !py-2.5 text-sm">
+            {tr(r.title, lang)}
+          </a>
+        ))
+      }
+    </nav>
+  </PageHeader>
+
+  {
+    rankings.map((ranking) => (
+      <section id={ranking.slug} class="container-x scroll-mt-24 pb-6">
+        <div class="tile !grid !justify-normal p-6 sm:p-10 lg:grid-cols-[18rem_1fr] lg:gap-16">
+          <div class="mb-8 lg:mb-0">
+            <span class="mb-6 block h-1.5 w-12 rounded-full" style={`background:${ranking.tint}`} aria-hidden="true"></span>
+            <h2 class="display-md">
+              {tr(ranking.title, lang)}<span class="glow-dot">.</span>
+            </h2>
+          </div>
+
+          <ol class="divide-y divide-line" data-reveal-stagger="0.06">
+            {ranking.items.map((item, i) => (
+              <li class:list={['flex items-baseline gap-5 sm:gap-8', i === 0 ? 'pb-6' : 'py-5']}>
+                <span
+                  class:list={[
+                    'display w-12 shrink-0 text-right leading-none tabular-nums sm:w-16',
+                    i === 0 ? 'glow-dot text-6xl sm:text-7xl' : 'text-3xl text-muted sm:text-4xl',
+                  ]}
+                >
+                  {i + 1}
+                </span>
+                <span class="min-w-0">
+                  <span class:list={['block font-display leading-tight', i === 0 ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl']}>
+                    {tr(item.name, lang)}
+                  </span>
+                  {item.note && <span class="mt-1 block text-muted">{tr(item.note, lang)}</span>}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    ))
+  }
+  <div class="pb-24"></div>
+</Base>

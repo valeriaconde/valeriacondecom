@@ -1,0 +1,49 @@
+---
+import Base from '@/layouts/Base.astro';
+import PostDetail from '@/components/PostDetail.astro';
+import { postPaths, kindOf, kindLabel, formatDate, excerpt, type Post } from '@/lib/lately';
+
+export const getStaticPaths = postPaths;
+
+interface Props {
+  post: Post;
+  newer?: Post;
+  older?: Post;
+}
+
+const { post, newer, older } = Astro.props;
+const title = post.data.title ?? `${kindLabel[kindOf(post)]} from ${formatDate(post.data.date, 'long')}`;
+const name = (p: Post) => p.data.title ?? formatDate(p.data.date, 'long');
+---
+
+<Base title={title} description={post.data.quote ?? (excerpt(post, 150) || 'A life update from Valeria Conde.')}>
+  <section class="container-x pt-28 pb-24 sm:pt-36">
+    <a href="/lately" class="group mb-10 inline-flex items-center gap-2 text-sm text-muted hover:text-rose" data-reveal="fade">
+      <span aria-hidden="true">←</span> Lately
+    </a>
+    <div class="mx-auto max-w-5xl" data-reveal>
+      <PostDetail post={post} headingTag="h1" />
+    </div>
+
+    <nav class="mx-auto mt-24 grid max-w-2xl gap-4 sm:grid-cols-2" aria-label="More posts">
+      {
+        newer ? (
+          <a href={`/lately/${newer.id}`} class="tile p-5">
+            <span class="text-xs text-muted">← Newer</span>
+            <span class="mt-2 line-clamp-2 font-display text-xl">{name(newer)}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        older && (
+          <a href={`/lately/${older.id}`} class="tile p-5 text-right">
+            <span class="text-xs text-muted">Older →</span>
+            <span class="mt-2 line-clamp-2 font-display text-xl">{name(older)}</span>
+          </a>
+        )
+      }
+    </nav>
+  </section>
+</Base>

@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import { kindOf, kindLabel, formatDate, videoUrl, excerpt, type Post } from '@/lib/lately';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const kind = kindOf(post);
+const cover = data.photos[0];
+const video = videoUrl(post);
+const text = excerpt(post);
+const label = data.title ?? (kind === 'quote' ? data.quote : text) ?? kindLabel[kind];
+const onMedia = kind === 'photo' || kind === 'video';
+---
+
+<a
+  href={`/lately/${post.id}`}
+  class:list={['tile group aspect-square p-5 sm:aspect-[6/5] sm:p-6', kind === 'quote' && '!bg-rose-soft', kind === 'video' && !data.poster && '!bg-paper-2']}
+  data-post={post.id}
+  aria-label={`${kindLabel[kind]}, ${formatDate(data.date, 'long')}: ${label}`}
+>
+  {
+    cover && kind === 'photo' && (
+      <Image
+        src={cover}
+        alt=""
+        widths={cover.format === 'svg' ? undefined : [400, 700, 1000]}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        class="absolute inset-0 size-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+      />
+    )
+  }
+  {
+    video && (
+      <video
+        src={video}
+        poster={data.poster?.src}
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        class="absolute inset-0 size-full object-cover"
+        data-hover-play
+        aria-hidden="true"
+      />
+    )
+  }
+  {onMedia && <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" aria-hidden="true" />}
+
+  <span class:list={['relative flex items-center justify-between text-xs font-medium', onMedia ? 'text-ink' : 'text-muted']}>
+    <span class:list={[onMedia && 'rounded-full bg-white/85 px-2.5 py-1 backdrop-blur-sm']}>{kindLabel[kind]}</span>
+    <span class:list={['flex items-center gap-2', onMedia && 'rounded-full bg-white/85 px-2.5 py-1 backdrop-blur-sm']}>
+      {data.photos.length > 1 && <span>1 / {data.photos.length} ·</span>}
+      <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+    </span>
+  </span>
+
+  {
+    kind === 'text' && (
+      <span class="relative line-clamp-6 font-display text-[1.6rem] leading-tight font-light tracking-tight">
+        {data.title ?? text}
+      </span>
+    )
+  }
+  {
+    kind === 'quote' && (
+      <span class="relative">
+        <span class="serif-italic line-clamp-5 block text-[1.6rem] leading-tight">“{data.quote}”</span>
+        {data.source && <span class="mt-3 block text-sm text-rose">{data.source}</span>}
+      </span>
+    )
+  }
+  {
+    onMedia && (
+      <span class="relative flex items-end justify-between gap-4 text-white">
+        <span class="font-display text-[1.75rem] leading-tight font-light tracking-tight">{data.title}</span>
+        {kind === 'video' && (
+          <span class="grid size-14 shrink-0 place-items-center rounded-full border border-white/60 bg-white/20 shadow-[0_0_24px_rgb(224_85_138/0.45)] backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
+          </span>
+        )}
+      </span>
+    )
+  }
+</a>
+
+<script>
+  // Video tiles play a silent preview while hovered
+  document.querySelectorAll<HTMLVideoElement>('video[data-hover-play]').forEach((video) => {
+    const tile = video.closest('a');
+    if (!tile || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    tile.addEventListener('pointerenter', () => video.play().catch(() => {}));
+    tile.addEventListener('pointerleave', () => {
+      video.pause();
+      video.currentTime = 0;
+    });
+  });
+</script>

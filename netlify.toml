@@ -1,3 +1,21 @@
 [build]
   command = "npm run build"
-  publish = "out"
+  publish = "dist"
+
+# Pages that were removed: send old links to the homepage instead of a 404
+[[redirects]]
+  from = "/writing"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/life"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/es/writing"
+  to = "/es/"
+  status = 301
+[[redirects]]
+  from = "/es/life"
+  to = "/es/"
+  status = 301

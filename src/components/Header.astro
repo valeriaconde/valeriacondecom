@@ -1,0 +1,224 @@
+---
+import { nav } from '@/data/site';
+import { langOf, otherLangPath, basePath } from '@/i18n';
+
+const current = basePath(Astro.url);
+const lang = langOf(Astro.url);
+const other = lang === 'es' ? 'en' : 'es';
+const isActive = (href: string) => current === href || current.startsWith(`${href}/`);
+---
+
+<header id="site-header" class="site-header fixed inset-x-0 top-0 z-50">
+  <div class="header-bg absolute inset-0 -z-10"></div>
+  <div class="container-x flex h-[72px] items-center justify-between gap-6">
+    <a href="/" class="group relative z-10 flex items-baseline font-display text-2xl italic" aria-label="Valeria Conde — home">
+      val<span class="glow-dot not-italic transition-transform duration-500 group-hover:scale-150">.</span>
+    </a>
+
+    <nav class="hidden md:block" aria-label="Main">
+      <ul class="flex items-center gap-7 text-[0.92rem] text-muted">
+        {
+          nav.map((l) => (
+            <li>
+              <a href={l.href} class="link-line py-2 transition-colors hover:text-ink aria-[current=page]:text-ink" aria-current={isActive(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="relative z-10 flex items-center gap-3">
+    <a
+      href={otherLangPath(Astro.url)}
+      hreflang={other}
+      data-lang-switch
+      class="lang-switch flex h-11 items-center gap-0.5 rounded-full border border-ink/15 bg-card px-1.5 md:h-10"
+      aria-label={lang === 'es' ? 'View in English' : 'Ver en español'}
+    >
+      {
+        (['en', 'es'] as const).map((code) => (
+          <span class:list={['lang-option relative grid h-8 w-9 place-items-center', lang === code ? 'text-white' : 'text-muted']}>
+            {lang === code && (
+              <svg class="lang-heart absolute inset-0 m-auto h-8 w-9" viewBox="0 0 36 32" aria-hidden="true">
+                <path d="M18 30.5C11 25.6 1.5 19 1.5 10.4 1.5 5.4 5.4 1.5 10.2 1.5c3.3 0 6.1 1.8 7.8 4.5 1.7-2.7 4.5-4.5 7.8-4.5 4.8 0 8.7 3.9 8.7 8.9 0 8.6-9.5 15.2-16.5 20.1Z" />
+              </svg>
+            )}
+            <span class="relative -mt-0.5 text-[0.68rem] font-semibold">{code.toUpperCase()}</span>
+          </span>
+        ))
+      }
+    </a>
+    <button
+      type="button"
+      id="menu-toggle"
+      class="relative z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-card md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Menu"
+    >
+      <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+    </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-40 flex flex-col bg-paper md:hidden" hidden>
+  <nav class="container-x flex flex-1 flex-col justify-between pt-28 pb-10" aria-label="Mobile">
+    <ul class="space-y-1">
+      {
+        [{ label: 'Home', href: '/' }, ...nav].map((l, i) => (
+          <li class="mobile-item" style={`--i:${i}`}>
+            <a href={l.href} class="display flex items-baseline gap-4 py-2 text-[2.8rem] leading-none">
+              <span class="text-xs text-muted">0{i + 1}</span>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a href="/recommendations" class="mobile-item text-muted" style="--i:8">Recommendations →</a>
+  </nav>
+</div>
+
+<style>
+  .header-bg {
+    opacity: 0;
+    background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid var(--color-line);
+    transition: opacity 0.4s var(--ease-out-expo);
+  }
+  .site-header[data-scrolled='true'] .header-bg {
+    opacity: 1;
+  }
+  .site-header {
+    transition: color 0.4s var(--ease-out-expo);
+  }
+  .lang-switch:hover {
+    border-color: var(--color-rose);
+  }
+  .lang-heart {
+    fill: var(--color-rose-glow);
+    filter: drop-shadow(0 2px 6px rgb(224 85 138 / 0.45));
+  }
+  .lang-switch:hover .lang-option:not(.text-muted) {
+    color: white;
+  }
+  .lang-switch:hover .text-muted {
+    color: var(--color-ink);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lang-switch:hover .lang-heart {
+      animation: heartbeat 0.9s ease-in-out;
+    }
+  }
+  @keyframes heartbeat {
+    15% {
+      transform: scale(1.18);
+    }
+    30% {
+      transform: scale(0.95);
+    }
+    45% {
+      transform: scale(1.12);
+    }
+    70% {
+      transform: scale(1);
+    }
+  }
+  .site-header[data-open='true'] .header-bg {
+    opacity: 0;
+  }
+
+  .menu-icon {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 10px;
+  }
+  .menu-icon span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: currentColor;
+    transition:
+      transform 0.4s var(--ease-out-expo),
+      top 0.4s var(--ease-out-expo);
+  }
+  .menu-icon span:first-child {
+    top: 0;
+  }
+  .menu-icon span:last-child {
+    top: 8px;
+  }
+  [aria-expanded='true'] .menu-icon span:first-child {
+    top: 4px;
+    transform: rotate(45deg);
+  }
+  [aria-expanded='true'] .menu-icon span:last-child {
+    top: 4px;
+    transform: rotate(-45deg);
+  }
+
+  .mobile-menu {
+    clip-path: circle(0% at calc(100% - 2.5rem) 2.25rem);
+    transition: clip-path 0.7s var(--ease-out-expo);
+  }
+  .mobile-menu[data-open='true'] {
+    clip-path: circle(150% at calc(100% - 2.5rem) 2.25rem);
+  }
+  .mobile-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s var(--ease-out-expo),
+      transform 0.6s var(--ease-out-expo);
+    transition-delay: calc(0.15s + var(--i) * 0.05s);
+  }
+  .mobile-menu[data-open='true'] .mobile-item {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .mobile-item {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  const onScroll = () => {
+    header.dataset.scrolled = window.scrollY > 24 ? 'true' : 'false';
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    header.dataset.open = String(open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    if (open) {
+      menu.hidden = false;
+      requestAnimationFrame(() => (menu.dataset.open = 'true'));
+    } else {
+      menu.dataset.open = 'false';
+      setTimeout(() => {
+        if (menu.dataset.open === 'false') menu.hidden = true;
+      }, 700);
+    }
+  };
+
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header.dataset.open === 'true') setOpen(false);
+  });
+</script>
