@@ -36,12 +36,13 @@ export const rankings: Ranking[] = [
     slug: 'books',
     title: { en: 'Books', es: 'Libros' },
     tint: '#fbe2eb',
+    image: 'books.webp',
     items: [
-      { name: 'Your #1 book', note: 'A line about why, if you want' },
-      { name: 'Your #2 book' },
-      { name: 'Your #3 book' },
-      { name: 'Your #4 book' },
-      { name: 'Your #5 book' },
+      { name: 'Milkman', note: 'Anna Burns' },
+      { name: 'Drive Your Plow Over the Bones of the Dead', note: 'Olga Tokarczuk' },
+      { name: 'Dogs of Summer', note: 'Andrea Abreu' },
+      { name: 'My Brilliant Friend', note: 'Elena Ferrante' },
+      { name: 'I Who Have Never Known Men', note: 'Jacqueline Harpman' },
     ],
   },
   {

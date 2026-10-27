@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import LatelyTeaser from '@/components/LatelyTeaser.astro';
 import { getPresents } from '@/lib/presents';
-import { showPresentsOnHomepage, presentsHome } from '@/data/presents';
+import { showPresentsOnHomepage, presentsHome, homepagePresents } from '@/data/presents';
 import { langOf, tr } from '@/i18n';
 import { rankings, rankingsText } from '@/data/rankings';
 import type { ImageMetadata } from 'astro';
@@ -32,7 +32,14 @@ const rankingImage = (file?: string) => {
   if (!img) throw new Error(`Ranking image "${file}" not found in src/assets/rankings/`);
   return img;
 };
-const presentPreviews = showPresentsOnHomepage ? (await getPresents()).slice(0, 3) : [];
+const allPresents = showPresentsOnHomepage ? await getPresents() : [];
+const presentPreviews = showPresentsOnHomepage
+  ? homepagePresents.map((title) => {
+      const present = allPresents.find((p) => p.title === title);
+      if (!present) throw new Error(`homepagePresents: no present titled "${title}" in src/data/presents.ts`);
+      return present;
+    })
+  : [];
 ---
 
 <Base>
