@@ -25,6 +25,13 @@ const lately = defineCollection({
       video: z.string().optional(),
       /** Optional still image shown before the video plays */
       poster: image().optional(),
+      /** Optional place tag, e.g. "Bern, Switzerland". Opens in Google Maps from the post */
+      location: z.string().optional(),
+      /** For song posts: a Spotify link. The song name, artist and cover are read from Spotify when the site is built */
+      spotify: z.string().regex(/^https:\/\/open\.spotify\.com\//, 'Use an https://open.spotify.com/… link').optional(),
+      /** Optional: overrides the song name or artist that Spotify gives */
+      song: z.string().optional(),
+      artist: z.string().optional(),
       /** For quote posts: the quote itself, and who said it */
       quote: z.string().optional(),
       source: z.string().optional(),

@@ -5,7 +5,7 @@
  * drifts around on its own when nobody is pointing at it (and on phones).
  */
 import { Image } from 'astro:assets';
-import { getPosts, kindOf, excerpt } from '@/lib/lately';
+import { getPosts, kindOf, excerpt, songOf } from '@/lib/lately';
 import { latelyTeaser } from '@/data/home';
 import { langOf, tr } from '@/i18n';
 
@@ -13,6 +13,8 @@ const lang = langOf(Astro.url);
 const posts = (await getPosts()).slice(0, 4);
 // Always four tiles; with fewer posts they repeat, so the collage has no gaps
 const tiles = posts.length ? Array.from({ length: 4 }, (_, i) => posts[i % posts.length]) : [];
+// Song posts show their album art from Spotify
+const songCovers = new Map(await Promise.all(posts.map(async (post) => [post.id, (await songOf(post))?.cover] as const)));
 
 // Collage spots: desktop is 4 columns × 2 rows, phones are 2 × 2
 const spans = ['sm:col-span-2 sm:row-span-2', '', '', 'sm:col-span-2'];
@@ -26,10 +28,13 @@ const spans = ['sm:col-span-2 sm:row-span-2', '', '', 'sm:col-span-2'];
           {tiles.map((post, i) => {
             const kind = kindOf(post);
             const cover = post.data.photos[0] ?? post.data.poster;
+            const songCover = songCovers.get(post.id);
             return (
               <div class:list={['relative overflow-hidden rounded-2xl', spans[i]]}>
                 {cover ? (
                   <Image src={cover} alt="" widths={cover.format === 'svg' ? undefined : [400, 800]} sizes="(min-width: 640px) 50vw, 50vw" class="size-full object-cover" />
+                ) : songCover ? (
+                  <img src={songCover} alt="" class="size-full object-cover" />
                 ) : kind === 'quote' ? (
                   <div class="flex size-full items-end bg-rose-soft p-5">
                     <p class="serif-italic line-clamp-4 text-xl leading-snug">“{post.data.quote}”</p>

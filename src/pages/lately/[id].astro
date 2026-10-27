@@ -1,7 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro';
 import PostDetail from '@/components/PostDetail.astro';
-import { postPaths, kindOf, kindLabel, formatDate, excerpt, type Post } from '@/lib/lately';
+import { postPaths, kindOf, kindLabel, formatDate, excerpt, songOf, type Post } from '@/lib/lately';
 
 export const getStaticPaths = postPaths;
 
@@ -12,7 +12,8 @@ interface Props {
 }
 
 const { post, newer, older } = Astro.props;
-const title = post.data.title ?? `${kindLabel[kindOf(post)]} from ${formatDate(post.data.date, 'long')}`;
+const song = await songOf(post);
+const title = post.data.title ?? (song && `${song.title}${song.artist ? ` by ${song.artist}` : ''}`) ?? `${kindLabel[kindOf(post)]} from ${formatDate(post.data.date, 'long')}`;
 const name = (p: Post) => p.data.title ?? formatDate(p.data.date, 'long');
 ---
 

@@ -1,5 +1,6 @@
 ---
 date: 2026-10-24
+draft: true
 title: Example photo post
 photos:
   - ./photo-1.svg

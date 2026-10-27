@@ -6,6 +6,17 @@ import PostLightbox from '@/components/PostLightbox.astro';
 import { getPosts } from '@/lib/lately';
 
 const posts = await getPosts();
+
+// This year's posts come first with no heading; earlier years each get a divider
+const thisYear = new Date().getUTCFullYear();
+const years: { year?: number; posts: typeof posts }[] = [];
+for (const post of posts) {
+  const year = post.data.date.getUTCFullYear();
+  const label = year >= thisYear ? undefined : year;
+  const last = years.at(-1);
+  if (last && last.year === label) last.posts.push(post);
+  else years.push({ year: label, posts: [post] });
+}
 ---
 
 <Base title="Lately" description="Little updates from Valeria Conde's life, newest first.">
@@ -14,11 +25,21 @@ const posts = await getPosts();
   <section class="container-x pb-32">
     {
       posts.length ? (
-        <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" data-reveal-stagger="0.07">
-          {posts.map((post) => (
-            <PostTile post={post} />
-          ))}
-        </div>
+        years.map(({ year, posts }, i) => (
+          <>
+            {year && (
+              <div class:list={['mb-8 flex items-center gap-6', i > 0 && 'mt-20']} data-reveal="fade">
+                <h2 class="display-md text-rose">{year}</h2>
+                <span class="h-px flex-1 bg-line" aria-hidden="true" />
+              </div>
+            )}
+            <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" data-reveal-stagger="0.07">
+              {posts.map((post) => (
+                <PostTile post={post} />
+              ))}
+            </div>
+          </>
+        ))
       ) : (
         <p class="lead">Nothing here yet.</p>
       )

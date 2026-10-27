@@ -6,8 +6,8 @@ shows up at `/lately/lisbon-again`. Posts are sorted by `date`, newest first, an
 the three newest also appear on the homepage.
 
 The kind of post is worked out from what you put in it: a `video` makes it a video
-post, `photos` make it a photo post, a `quote` makes it a quote, and anything else
-is a text post. Whatever you write below the second `---` is the text of the post.
+post, `photos` make it a photo post, a `spotify` link makes it a song, a `quote`
+makes it a quote, and anything else is a text post. Whatever you write below the second `---` is the text of the post.
 
 ## Photos (one or many)
 
@@ -32,6 +32,26 @@ Went back for the light.
 
 The first photo is the cover in the grid. Big photos are fine: they're resized
 automatically when the site is built.
+
+## Song (Spotify)
+
+Copy the song's link in Spotify (Share → Copy Song Link) and paste it as `spotify:`.
+The folder needs only the `index.md`.
+
+```md
+---
+date: 2026-10-15
+spotify: https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC
+---
+
+On repeat all week.
+```
+
+The song name, artist and album cover are filled in from Spotify when the site is
+built. The card shows the cover and opens the song in Spotify when clicked; the
+song doesn't play on the site. Album and playlist links work too. If Spotify gets a
+name wrong, or can't be reached during the build, add `song:` and/or `artist:` to
+the post to set them yourself.
 
 ## Text
 
@@ -72,6 +92,23 @@ Six weeks of knitting in forty seconds.
 
 `poster:` is an optional still image shown before the video plays. Keep videos
 short and small (under ~20 MB) so the page stays quick.
+
+## Tagging a place
+
+Any post can have a `location:`. It shows with a pin on the card, and on the post
+it links to Google Maps:
+
+```md
+---
+date: 2026-04-14
+location: Bern, Switzerland
+photos:
+  - ./bern.jpg
+---
+```
+
+Write it the way you'd search for it in Google Maps: a city, or something more
+exact like `Gerechtigkeitsgasse, Bern` or a restaurant's name and town.
 
 ## Hiding a post
 

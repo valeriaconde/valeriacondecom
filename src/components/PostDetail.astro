@@ -5,7 +5,9 @@
  */
 import { Image } from 'astro:assets';
 import { render } from 'astro:content';
-import { kindOf, kindLabel, formatDate, videoUrl, type Post } from '@/lib/lately';
+import SpotifyLogo from '@/components/SpotifyLogo.astro';
+import PinIcon from '@/components/PinIcon.astro';
+import { kindOf, kindLabel, formatDate, videoUrl, songOf, mapsUrl, type Post } from '@/lib/lately';
 
 interface Props {
   post: Post;
@@ -17,6 +19,7 @@ const { post, headingTag: Heading = 'h2' } = Astro.props;
 const { data } = post;
 const kind = kindOf(post);
 const video = videoUrl(post);
+const song = await songOf(post);
 const { Content } = await render(post);
 const many = data.photos.length > 1;
 ---
@@ -61,6 +64,20 @@ const many = data.photos.length > 1;
     )
   }
   {
+    song && (
+      <a href={song.url} target="_blank" rel="noopener" class="tile group mx-auto !flex-row max-w-2xl items-center !justify-start gap-6 p-4 sm:p-5">
+        {song.cover && <img src={song.cover} alt="" width="640" height="640" class="size-28 shrink-0 rounded-2xl object-cover sm:size-36" />}
+        <span class="min-w-0">
+          <span class="block font-display text-[1.75rem] leading-tight font-light tracking-tight">{song.title}</span>
+          {song.artist && <span class="mt-1 block text-muted">{song.artist}</span>}
+          <span class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-rose">
+            <SpotifyLogo class="size-5 text-[#1ed760]" /> Listen on Spotify <span class="arrow-ne" aria-hidden="true">↗</span>
+          </span>
+        </span>
+      </a>
+    )
+  }
+  {
     kind === 'quote' && (
       <blockquote class="rounded-[var(--radius-tile)] bg-rose-soft px-8 py-14 sm:px-14 sm:py-20">
         <p class="serif-italic text-[clamp(1.8rem,4vw,3rem)] leading-[1.15]">“{data.quote}”</p>
@@ -70,9 +87,18 @@ const many = data.photos.length > 1;
   }
 
   <div class:list={['mx-auto max-w-2xl', kind !== 'text' && 'mt-10']}>
-    <p class="flex items-center gap-3 text-sm text-muted">
+    <p class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted">
       <span class="chip">{kindLabel[kind]}</span>
       <time datetime={data.date.toISOString()}>{formatDate(data.date, 'long')}</time>
+      {
+        data.location && (
+          <a href={mapsUrl(data.location)} target="_blank" rel="noopener" class="group inline-flex items-center gap-1.5 rounded-full border border-line bg-card py-1 pr-3 pl-2 text-ink transition-colors hover:border-rose-glow/40 hover:text-rose" aria-label={`${data.location}, open in Google Maps`}>
+            <PinIcon class="size-4 text-rose-glow" />
+            {data.location}
+            <span class="arrow-ne text-muted" aria-hidden="true">↗</span>
+          </a>
+        )
+      }
     </p>
     {data.title && <Heading class="display-md mt-5">{data.title}</Heading>}
     {!data.title && <Heading class="sr-only">{kindLabel[kind]} from {formatDate(data.date, 'long')}</Heading>}
