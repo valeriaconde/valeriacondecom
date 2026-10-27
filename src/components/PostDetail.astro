@@ -1,0 +1,127 @@
+---
+/**
+ * The full view of a post: its photos (as a carousel), video or quote, then its text.
+ * Used on the post's own page and inside the lightbox.
+ */
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import { kindOf, kindLabel, formatDate, videoUrl, type Post } from '@/lib/lately';
+
+interface Props {
+  post: Post;
+  /** The post's own page uses an <h1>; the lightbox uses an <h2> */
+  headingTag?: 'h1' | 'h2';
+}
+
+const { post, headingTag: Heading = 'h2' } = Astro.props;
+const { data } = post;
+const kind = kindOf(post);
+const video = videoUrl(post);
+const { Content } = await render(post);
+const many = data.photos.length > 1;
+---
+
+<article class="post-detail">
+  {
+    kind === 'photo' && (
+      <div class="carousel" data-carousel>
+        <div class="carousel-track" data-track tabindex="0" aria-label={`${data.photos.length} photos`}>
+          {data.photos.map((photo, i) => (
+            <figure class="carousel-slide" aria-label={`Photo ${i + 1} of ${data.photos.length}`}>
+              <Image
+                src={photo}
+                alt={data.title ? `${data.title}, photo ${i + 1}` : `Photo ${i + 1}`}
+                widths={photo.format === 'svg' ? undefined : [800, 1400, 2000]}
+                sizes="(min-width: 1100px) 1000px, 92vw"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                class="size-full object-contain"
+              />
+            </figure>
+          ))}
+        </div>
+        {many && (
+          <div class="mt-4 flex items-center justify-between">
+            <button type="button" class="icon-btn" data-prev aria-label="Previous photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+            </button>
+            <div class="flex items-center gap-2" aria-hidden="true">
+              {data.photos.map((_, i) => <span class="carousel-dot" data-dot={i} />)}
+            </div>
+            <button type="button" class="icon-btn" data-next aria-label="Next photo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+        )}
+      </div>
+    )
+  }
+  {
+    video && (
+      <video src={video} poster={data.poster?.src} controls playsinline preload="metadata" class="media-frame max-h-[60dvh] w-full bg-ink object-contain" />
+    )
+  }
+  {
+    kind === 'quote' && (
+      <blockquote class="rounded-[var(--radius-tile)] bg-rose-soft px-8 py-14 sm:px-14 sm:py-20">
+        <p class="serif-italic text-[clamp(1.8rem,4vw,3rem)] leading-[1.15]">“{data.quote}”</p>
+        {data.source && <footer class="mt-6 text-rose">{data.source}</footer>}
+      </blockquote>
+    )
+  }
+
+  <div class:list={['mx-auto max-w-2xl', kind !== 'text' && 'mt-10']}>
+    <p class="flex items-center gap-3 text-sm text-muted">
+      <span class="chip">{kindLabel[kind]}</span>
+      <time datetime={data.date.toISOString()}>{formatDate(data.date, 'long')}</time>
+    </p>
+    {data.title && <Heading class="display-md mt-5">{data.title}</Heading>}
+    {!data.title && <Heading class="sr-only">{kindLabel[kind]} from {formatDate(data.date, 'long')}</Heading>}
+    <div class:list={['prose-post mt-5', kind === 'text' ? 'font-display text-[1.6rem] leading-snug font-light' : 'text-lg']}>
+      <Content />
+    </div>
+  </div>
+</article>
+
+<style is:global>
+  .media-frame,
+  .carousel-track {
+    border-radius: var(--radius-tile);
+    box-shadow: 0 40px 100px -40px rgb(224 85 138 / 0.4);
+  }
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    background: var(--color-paper-2);
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel-slide {
+    flex: 0 0 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 60dvh;
+    scroll-snap-align: center;
+  }
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgb(29 24 32 / 0.18);
+    transition:
+      background 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s;
+  }
+  .carousel-dot[data-active] {
+    background: var(--color-rose-glow);
+    box-shadow: 0 0 10px rgb(224 85 138 / 0.6);
+    transform: scale(1.2);
+  }
+</style>
+
+<script>
+  import { initCarousels } from '@/scripts/carousel';
+  initCarousels(document);
+</script>

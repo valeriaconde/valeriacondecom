@@ -1,0 +1,416 @@
+@import 'tailwindcss';
+
+/* Fonts are self-hosted through Fontsource */
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/fraunces/full-italic.css';
+@import '@fontsource-variable/inter';
+
+/* ------------------------------------------------------------------
+   Design tokens — change colors and fonts for the whole site here
+   ------------------------------------------------------------------ */
+@theme {
+  --color-paper: #f8f4f6; /* page background (soft blush white) */
+  --color-paper-2: #f1e9ee; /* alternate background */
+  --color-card: #ffffff;
+  --color-ink: #1d1820; /* text */
+  --color-ink-2: #2c2430;
+  --color-muted: #6f6371; /* secondary text */
+  --color-rose: #c23d72; /* accent for text and links */
+  --color-rose-deep: #a32f5f;
+  --color-rose-glow: #e0558a; /* accent for dots, glows and decoration */
+  --color-rose-soft: #fbe2eb;
+  --color-line: rgb(29 24 32 / 0.08);
+
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  --radius-tile: 18px;
+  --shadow-glow: 0 0 0 1px rgb(224 85 138 / 0.12), 0 24px 60px -24px rgb(224 85 138 / 0.5);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    background: var(--color-paper);
+  }
+  ::selection {
+    background: var(--color-rose-soft);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-rose);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 5vw, 4rem);
+  }
+  .container-prose {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 5vw, 4rem);
+  }
+
+  /* Headlines — light Fraunces with its soft optical axis */
+  .display,
+  .display-xl,
+  .display-lg,
+  .display-md,
+  .display-sm {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-variation-settings: 'SOFT' 100;
+    letter-spacing: -0.03em;
+  }
+  .display-xl {
+    font-size: clamp(3.4rem, 11vw, 9.5rem);
+    line-height: 0.92;
+  }
+  .display-lg {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 0.95;
+  }
+  .display-md {
+    font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .display-sm {
+    font-size: clamp(1.4rem, 2vw, 1.85rem);
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .serif-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-variation-settings: 'SOFT' 100;
+  }
+  .lead {
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+
+  /* The glowing rose period after big titles */
+  .glow-dot {
+    color: var(--color-rose-glow);
+    text-shadow: 0 0 28px rgb(224 85 138 / 0.45);
+  }
+
+  /* Small label */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-rose-glow);
+    box-shadow: 0 0 10px rgb(224 85 138 / 0.6);
+  }
+  .mono {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    background: var(--color-paper-2);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-tile);
+  }
+
+  /* Rounded card that comes forward with a rose glow on hover */
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-tile);
+    background: var(--color-card);
+    box-shadow: 0 1px 2px rgb(29 24 32 / 0.04);
+    transition:
+      translate 0.5s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo),
+      border-color 0.5s var(--ease-out-expo);
+  }
+  a.tile:hover,
+  a.tile:focus-visible {
+    translate: 0 -3px;
+    border-color: rgb(224 85 138 / 0.35);
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.95rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1;
+    transition:
+      background-color 0.35s var(--ease-out-expo),
+      color 0.35s var(--ease-out-expo),
+      border-color 0.35s var(--ease-out-expo),
+      box-shadow 0.35s var(--ease-out-expo);
+  }
+  .btn-primary {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover {
+    background: var(--color-rose);
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-ghost {
+    border: 1px solid rgb(29 24 32 / 0.15);
+    background: var(--color-card);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-rose);
+    color: var(--color-rose);
+  }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid rgb(29 24 32 / 0.15);
+    background: var(--color-card);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      border-color 0.3s,
+      color 0.3s,
+      opacity 0.3s;
+  }
+  .icon-btn:hover {
+    border-color: var(--color-rose);
+    color: var(--color-rose);
+  }
+  .icon-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .arrow {
+    display: inline-block;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  :is(a, button):hover > .arrow,
+  .group:hover .arrow {
+    transform: translateX(5px);
+  }
+  .arrow-ne {
+    display: inline-block;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  .group:hover .arrow-ne {
+    transform: translate(3px, -3px);
+  }
+
+  /* Underline that grows on hover */
+  .link-line {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-out-expo);
+  }
+  .link-line:hover,
+  .link-line[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+
+  /* List rows: a soft rose fill sweeps in on hover */
+  .index-row {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .index-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-rose-soft);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .index-row:hover::before,
+  .index-row:focus-visible::before {
+    transform: scaleY(1);
+  }
+  .index-row .index-title {
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .index-row:hover .index-title {
+    transform: translateX(clamp(0.5rem, 2vw, 1.25rem));
+  }
+
+  /* Placeholder for photos that don't exist yet */
+  .swatch {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-tile);
+    background: var(--tint, var(--color-paper-2));
+  }
+  .swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 90% at 20% 0%, rgb(255 255 255 / 0.55), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Text written in a post (markdown) */
+  .prose-post > * + * {
+    margin-top: 1em;
+  }
+  .prose-post a {
+    color: var(--color-rose);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-post h2,
+  .prose-post h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.5em;
+    line-height: 1.2;
+    margin-top: 1.4em;
+  }
+  .prose-post blockquote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.25em;
+    padding-left: 1em;
+    border-left: 2px solid var(--color-rose-soft);
+  }
+  .prose-post ul {
+    list-style: disc;
+    padding-left: 1.25em;
+  }
+  .prose-post ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+}
+
+/* Mask used by the line-by-line headline animation */
+.split-line {
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
+}
+
+/* ------------------------------------------------------------------
+   Motion — elements start hidden only when JS is on and the visitor
+   hasn't asked for reduced motion. motion.ts brings them in.
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  html.js [data-reveal='fade'] {
+    transform: none;
+  }
+  html.js [data-reveal='pop'] {
+    transform: scale(0.6);
+  }
+  html.js [data-reveal-stagger] > * {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  html.js [data-split] {
+    visibility: hidden;
+  }
+  html.js [data-pop-group]:not([data-popped]) [data-pop] {
+    opacity: 0;
+  }
+  html.js [data-draw] {
+    clip-path: inset(0 100% 0 0);
+  }
+  html.js [data-draw='rtl'] {
+    clip-path: inset(0 0 0 100%);
+  }
+
+  /* Soft cross-fade between pages in browsers that support it */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root) {
+    animation: vt-out 0.3s var(--ease-out-expo) both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-in 0.6s var(--ease-out-expo) both;
+  }
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}

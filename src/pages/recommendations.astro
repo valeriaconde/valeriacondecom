@@ -1,0 +1,47 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { recommendations } from '@/data/recommendations';
+---
+
+<Base title="Recommendations" description="Books, films, music, and shows Valeria Conde recommends.">
+  <PageHeader
+    eyebrow="Curated"
+    title="Things I"
+    accent="love"
+    lead="Books, films, music, and shows I find myself recommending constantly. Updated when something new earns a place here."
+  >
+    <nav class="mt-10 flex flex-wrap gap-2" aria-label="Categories" data-reveal data-delay="0.45">
+      {recommendations.map((r) => <a href={`#${r.title.toLowerCase()}`} class="btn btn-ghost !py-2.5 text-sm">{r.title}</a>)}
+    </nav>
+  </PageHeader>
+
+  {
+    recommendations.map((group, gi) => (
+      <section id={group.title.toLowerCase()} class="border-t border-line">
+        <div class="container-x grid gap-10 py-20 lg:grid-cols-[18rem_1fr] lg:gap-16">
+          <div class="lg:sticky lg:top-28 lg:self-start">
+            <p class="mono mb-3 text-rose">0{gi + 1}</p>
+            <h2 class="display-lg" data-split>{group.title}</h2>
+          </div>
+          <ul>
+            {group.items.map((item) => (
+              <li class="index-row group border-b border-line first:border-t" data-reveal>
+                <div class="index-title py-6 sm:px-4">
+                  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h3 class="display-sm">{item.title}</h3>
+                    <span class="text-sm text-muted">
+                      {item.creator}
+                      {item.year && `, ${item.year}`}
+                    </span>
+                  </div>
+                  <p class="mt-2 text-muted">{item.note}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+</Base>

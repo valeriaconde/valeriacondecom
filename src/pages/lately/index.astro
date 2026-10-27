@@ -1,0 +1,29 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import PostTile from '@/components/PostTile.astro';
+import PostLightbox from '@/components/PostLightbox.astro';
+import { getPosts } from '@/lib/lately';
+
+const posts = await getPosts();
+---
+
+<Base title="Lately" description="Little updates from Valeria Conde's life, newest first.">
+  <PageHeader title="Lately" lead="Small pieces of my life, newest first. Hover to bring one forward; click to open it." />
+
+  <section class="container-x pb-32">
+    {
+      posts.length ? (
+        <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" data-reveal-stagger="0.07">
+          {posts.map((post) => (
+            <PostTile post={post} />
+          ))}
+        </div>
+      ) : (
+        <p class="lead">Nothing here yet.</p>
+      )
+    }
+  </section>
+
+  <PostLightbox posts={posts} />
+</Base>

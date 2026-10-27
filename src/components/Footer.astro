@@ -1,0 +1,50 @@
+---
+import { site, socials, nav } from '@/data/site';
+---
+
+<footer class="container-x mt-auto pb-6">
+  <div class="tile !block px-6 pt-16 pb-8 sm:px-12 sm:pt-20">
+    <p class="eyebrow flex w-fit" data-reveal>Say hello</p>
+    <a
+      href="/contact"
+      class="group mt-6 inline-flex flex-wrap items-baseline gap-x-5 display-lg transition-colors duration-500 hover:text-rose"
+      data-reveal
+      data-delay="0.1"
+    >
+      <span>Come <em class="serif-italic text-rose">find me</em></span>
+      <span class="arrow text-[0.55em]" aria-hidden="true">→</span>
+    </a>
+
+    <div class="mt-16 grid gap-10 border-t border-line pt-10 sm:grid-cols-3">
+      <div>
+        <p class="mono mb-4 text-muted">Pages</p>
+        <ul class="space-y-1.5">
+          {nav.map((l) => <li><a href={l.href} class="link-line">{l.label}</a></li>)}
+          <li><a href="/rankings" class="link-line">Rankings</a></li>
+          <li><a href="/lists" class="link-line">Lists</a></li>
+          <li><a href="/travel" class="link-line">Travel</a></li>
+          <li><a href="/photography" class="link-line">Photography</a></li>
+          <li><a href="/recommendations" class="link-line">Recommendations</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="mono mb-4 text-muted">Elsewhere</p>
+        <ul class="space-y-1.5">
+          {
+            socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener noreferrer" class="group inline-flex gap-1.5">
+                  <span class="link-line">{s.label}</span>
+                  <span class="arrow-ne text-muted" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="flex flex-col justify-end gap-1 text-sm text-muted sm:items-end">
+        <p>© {new Date().getFullYear()} {site.name}</p>
+      </div>
+    </div>
+  </div>
+</footer>

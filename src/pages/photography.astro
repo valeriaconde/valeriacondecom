@@ -1,0 +1,34 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Swatch from '@/components/Swatch.astro';
+import { photos } from '@/data/life';
+---
+
+<Base title="Photography">
+  <PageHeader
+    eyebrow="Photography"
+    title="Scenes I wanted"
+    accent="to keep"
+    lead="Mostly film. Light, texture, moments that looked like something I'd read about."
+  />
+
+  <section class="container-x pb-32">
+    <div class="grid grid-flow-dense grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4" data-reveal-stagger="0.06">
+      {
+        photos.map((photo) => (
+          <Swatch
+            {...photo}
+            caption={photo.location}
+            class:list={[
+              photo.size === 'wide' && 'col-span-2 aspect-[2/1]',
+              photo.size === 'tall' && 'row-span-2',
+              !photo.size && 'aspect-square',
+            ]}
+          />
+        ))
+      }
+    </div>
+    <p class="mono mt-12 text-center text-muted">Real photographs coming soon — these are placeholders.</p>
+  </section>
+</Base>

@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { socials } from '@/data/site';
+---
+
+<Base title="Contact">
+  <PageHeader
+    eyebrow="Contact"
+    title="Get in"
+    accent="touch"
+    lead="I am always happy to hear from people who are curious about the same things I am — law and technology, writing, or just a good book recommendation."
+  />
+
+  <section class="container-x pb-32">
+    <p class="eyebrow mb-6" data-reveal="fade">Elsewhere</p>
+    <ul class="max-w-3xl border-t border-line" data-reveal-stagger="0.08">
+      {
+        socials.map(({ label, href, description }) => (
+          <li class="border-b border-line">
+            <a href={href} target="_blank" rel="noopener noreferrer" class="index-row group flex items-center justify-between gap-6 py-6 sm:px-4">
+              <div class="index-title">
+                <span class="display-sm">{label}</span>
+                <p class="text-sm text-muted">{description}</p>
+              </div>
+              <span class="arrow-ne text-2xl text-muted group-hover:text-rose-deep" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>

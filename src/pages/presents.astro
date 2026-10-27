@@ -1,0 +1,19 @@
+---
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import PresentCard from '@/components/PresentCard.astro';
+import { presentsIntro } from '@/data/presents';
+import { getPresents } from '@/lib/presents';
+
+const presents = await getPresents();
+---
+
+<Base title="Presents" description="Gift ideas for Valeria Conde.">
+  <PageHeader eyebrow="Christmas & birthday" title="Presents" lead={presentsIntro} />
+
+  <section class="container-x pb-32">
+    <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4" data-reveal-stagger="0.07">
+      {presents.map((present) => <PresentCard present={present} />)}
+    </div>
+  </section>
+</Base>

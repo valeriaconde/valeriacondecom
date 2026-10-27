@@ -1,0 +1,36 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** Optional word or phrase shown in rose italic after the title */
+  accent?: string;
+  lead?: string;
+  /** Turns the lead into a link */
+  leadHref?: string;
+}
+const { eyebrow, title, accent, lead, leadHref } = Astro.props;
+---
+
+<section class="container-x pt-36 pb-12 sm:pt-44 sm:pb-16">
+  {eyebrow && <p class="eyebrow mb-8" data-reveal="fade">{eyebrow}</p>}
+  <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <h1 class="display-lg max-w-4xl" data-split="load">
+      {title}{accent && <> <em class="serif-italic text-rose">{accent}</em></>}<span class="glow-dot">.</span>
+    </h1>
+    {
+      lead && (
+        <p class="lead max-w-sm lg:mb-3" data-reveal data-delay="0.35">
+          {leadHref ? (
+            <a href={leadHref} class="group inline-flex items-baseline gap-2 text-ink underline decoration-rose-glow decoration-2 underline-offset-4 transition-colors hover:text-rose">
+              {lead}
+              <span class="arrow text-rose" aria-hidden="true">→</span>
+            </a>
+          ) : (
+            lead
+          )}
+        </p>
+      )
+    }
+  </div>
+  <slot />
+</section>

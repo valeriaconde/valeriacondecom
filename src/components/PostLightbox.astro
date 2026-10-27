@@ -1,0 +1,119 @@
+---
+/**
+ * Opens a post over the current page when its tile is clicked, and updates the
+ * address bar so the post can be shared. Without JavaScript, tiles simply link
+ * to the post's own page.
+ */
+import PostDetail from '@/components/PostDetail.astro';
+import type { Post } from '@/lib/lately';
+
+interface Props {
+  posts: Post[];
+}
+const { posts } = Astro.props;
+---
+
+<dialog id="post-dialog" class="lightbox" aria-label="Post" data-lenis-prevent>
+  <div class="lightbox-panel">
+    <button type="button" class="icon-btn sticky top-0 z-10 ml-auto flex" data-close aria-label="Close post">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <div data-slot class="-mt-6"></div>
+  </div>
+</dialog>
+
+{
+  posts.map((post) => (
+    <template data-post-template={post.id}>
+      <PostDetail post={post} />
+    </template>
+  ))
+}
+
+<style>
+  .lightbox {
+    width: min(1040px, 94vw);
+    max-width: none;
+    max-height: 92dvh;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 28px;
+    background: var(--color-card);
+    color: inherit;
+    box-shadow: 0 40px 120px -30px rgb(29 24 32 / 0.35);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .lightbox-panel {
+    padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) clamp(2rem, 5vw, 3.5rem);
+  }
+  .lightbox::backdrop {
+    background: rgb(248 244 246 / 0.86);
+    backdrop-filter: blur(8px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox[open] {
+      animation: lightbox-in 0.6s var(--ease-out-expo);
+    }
+    .lightbox[open]::backdrop {
+      animation: backdrop-in 0.4s ease-out;
+    }
+  }
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { initCarousels } from '@/scripts/carousel';
+
+  const dialog = document.getElementById('post-dialog') as HTMLDialogElement;
+  const slot = dialog.querySelector<HTMLElement>('[data-slot]')!;
+  const lenis = () => (window as unknown as { __lenis?: { stop(): void; start(): void } }).__lenis;
+  let opener: HTMLElement | null = null;
+
+  function open(id: string, link: HTMLElement) {
+    const template = document.querySelector<HTMLTemplateElement>(`template[data-post-template="${CSS.escape(id)}"]`);
+    if (!template) return false;
+    slot.replaceChildren(template.content.cloneNode(true));
+    initCarousels(slot);
+    opener = link;
+    history.pushState({ post: id }, '', link.getAttribute('href'));
+    dialog.showModal();
+    dialog.scrollTop = 0;
+    lenis()?.stop();
+    return true;
+  }
+
+  dialog.addEventListener('close', () => {
+    slot.querySelectorAll('video').forEach((v) => v.pause());
+    lenis()?.start();
+    // Step back past the history entry the post added (unless Back already did)
+    if (history.state?.post) history.back();
+    opener?.focus({ preventScroll: true });
+  });
+
+  document.addEventListener('click', (e) => {
+    const link = (e.target as Element).closest<HTMLAnchorElement>('a[data-post]');
+    if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (open(link.dataset.post!, link)) e.preventDefault();
+  });
+
+  dialog.querySelector('[data-close]')!.addEventListener('click', () => dialog.close());
+  // Click on the backdrop closes it
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  window.addEventListener('popstate', () => {
+    if (dialog.open) dialog.close();
+  });
+</script>

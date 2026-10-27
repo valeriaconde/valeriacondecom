@@ -1,0 +1,149 @@
+---
+/**
+ * Homepage teaser for Lately: the newest posts sit behind frosted glass and a
+ * small clear "spotlight" lets you peek at them. It follows the cursor, and
+ * drifts around on its own when nobody is pointing at it (and on phones).
+ */
+import { Image } from 'astro:assets';
+import { getPosts, kindOf, excerpt } from '@/lib/lately';
+import { latelyTeaser } from '@/data/home';
+import { langOf, tr } from '@/i18n';
+
+const lang = langOf(Astro.url);
+const posts = (await getPosts()).slice(0, 4);
+// Always four tiles; with fewer posts they repeat, so the collage has no gaps
+const tiles = posts.length ? Array.from({ length: 4 }, (_, i) => posts[i % posts.length]) : [];
+
+// Collage spots: desktop is 4 columns × 2 rows, phones are 2 × 2
+const spans = ['sm:col-span-2 sm:row-span-2', '', '', 'sm:col-span-2'];
+---
+
+{
+  posts.length > 0 && (
+    <a href="/lately" class="teaser tile group relative block h-[520px] !bg-paper-2 sm:h-[560px]" data-teaser aria-label={tr(latelyTeaser.aria, lang)}>
+      {[false, true].map((sharp) => (
+        <div class:list={['teaser-layer absolute inset-0 grid grid-cols-2 grid-rows-2 gap-3 p-3 sm:grid-cols-4', sharp ? 'teaser-sharp' : 'teaser-blur']} aria-hidden="true">
+          {tiles.map((post, i) => {
+            const kind = kindOf(post);
+            const cover = post.data.photos[0] ?? post.data.poster;
+            return (
+              <div class:list={['relative overflow-hidden rounded-2xl', spans[i]]}>
+                {cover ? (
+                  <Image src={cover} alt="" widths={cover.format === 'svg' ? undefined : [400, 800]} sizes="(min-width: 640px) 50vw, 50vw" class="size-full object-cover" />
+                ) : kind === 'quote' ? (
+                  <div class="flex size-full items-end bg-rose-soft p-5">
+                    <p class="serif-italic line-clamp-4 text-xl leading-snug">“{post.data.quote}”</p>
+                  </div>
+                ) : (
+                  <div class="flex size-full items-end bg-card p-5">
+                    <p class="line-clamp-4 font-display text-xl leading-snug font-light">{post.data.title ?? excerpt(post, 120)}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+
+      <!-- the spotlight's soft rim -->
+      <span class="teaser-ring pointer-events-none absolute" aria-hidden="true"></span>
+
+      <div class="absolute inset-x-3 bottom-3 cursor-pointer sm:inset-x-auto sm:bottom-6 sm:left-6 sm:max-w-sm">
+        <div class="rounded-2xl bg-white/80 p-6 shadow-[0_20px_50px_-20px_rgb(29_24_32/0.35)] backdrop-blur-md sm:p-7">
+          <p class="serif-italic text-lg text-rose">{tr(latelyTeaser.whisper, lang)}</p>
+          <h2 class="display-lg mt-1 !text-[clamp(2.6rem,5vw,4rem)]">
+            {tr(latelyTeaser.title, lang)}<span class="glow-dot">.</span>
+          </h2>
+          <p class="mt-3 text-muted">{tr(latelyTeaser.body, lang)}</p>
+          <span class="btn btn-primary mt-6 !py-3 text-sm">
+            {tr(latelyTeaser.button, lang)} <span class="arrow" aria-hidden="true">→</span>
+          </span>
+        </div>
+      </div>
+    </a>
+  )
+}
+
+<style>
+  .teaser {
+    --mx: 70%;
+    --my: 40%;
+    --r: 150px;
+    cursor: none;
+  }
+  @media (hover: none) {
+    .teaser {
+      cursor: auto;
+    }
+  }
+  .teaser-blur {
+    filter: blur(16px) saturate(1.7) contrast(1.05);
+    transform: scale(1.06);
+  }
+  /* Only a soft circle of the sharp copy shows through */
+  .teaser-sharp {
+    -webkit-mask-image: radial-gradient(circle var(--r) at var(--mx) var(--my), #000 55%, transparent 100%);
+    mask-image: radial-gradient(circle var(--r) at var(--mx) var(--my), #000 55%, transparent 100%);
+  }
+  .teaser-ring {
+    left: var(--mx);
+    top: var(--my);
+    width: calc(var(--r) * 1.6);
+    height: calc(var(--r) * 1.6);
+    translate: -50% -50%;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.7);
+    box-shadow:
+      0 0 0 1px rgb(224 85 138 / 0.15),
+      0 0 60px rgb(224 85 138 / 0.35),
+      inset 0 0 40px rgb(255 255 255 / 0.35);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-teaser]').forEach((card) => {
+    const pos = { x: card.clientWidth * 0.7, y: card.clientHeight * 0.4, r: 150 };
+    const apply = () => {
+      card.style.setProperty('--mx', `${pos.x}px`);
+      card.style.setProperty('--my', `${pos.y}px`);
+      card.style.setProperty('--r', `${pos.r}px`);
+    };
+    apply();
+
+    // Wander to a random spot, pause, repeat
+    let wander: gsap.core.Tween | undefined;
+    const drift = () => {
+      if (reduceMotion) return;
+      wander = gsap.to(pos, {
+        x: gsap.utils.random(card.clientWidth * 0.15, card.clientWidth * 0.9),
+        y: gsap.utils.random(card.clientHeight * 0.15, card.clientHeight * 0.85),
+        r: gsap.utils.random(110, 170),
+        duration: gsap.utils.random(2.2, 3.4),
+        ease: 'sine.inOut',
+        delay: 0.4,
+        onUpdate: apply,
+        onComplete: drift,
+      });
+    };
+
+    // Only wander while the card is on screen
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !card.matches(':hover')) drift();
+      else wander?.kill();
+    }).observe(card);
+
+    card.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      wander?.kill();
+      const rect = card.getBoundingClientRect();
+      gsap.to(pos, { x: e.clientX - rect.left, y: e.clientY - rect.top, r: 170, duration: 0.5, ease: 'power3.out', overwrite: true, onUpdate: apply });
+    });
+    card.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'mouse') drift();
+    });
+  });
+</script>
