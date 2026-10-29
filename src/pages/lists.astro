@@ -21,13 +21,13 @@ const lang = langOf(Astro.url);
       {
         lists.map((list) => (
           <div id={list.id} class="card break-inside-avoid scroll-mt-24 p-8" data-reveal>
-            <h2 class="display-sm mb-6">{list.title}</h2>
+            <h2 class="display-sm mb-6">{tr(list.title, lang)}</h2>
             {list.items.length > 0 ? (
               <ol class="space-y-3" data-reveal-stagger="0.06">
                 {list.items.map((item, i) => (
                   <li class="flex gap-4 text-muted">
                     <span class="display w-5 shrink-0 text-rose">{i + 1}</span>
-                    <span>{item}</span>
+                    <span>{tr(item, lang)}</span>
                   </li>
                 ))}
               </ol>

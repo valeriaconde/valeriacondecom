@@ -19,4 +19,9 @@ export const inspirationText = {
 
 export const inspiration: Inspiration[] = [
   { quote: 'Eventually I must be dealt with.' },
+  { quote: "Thursday? This Thursday? No, I can't make it. No, the curse won't be lifted by then." },
+  { quote: '“I never see you at the club.” Ok? I never see you at the clearing in the forest.' },
+  { quote: 'I have survived everything, but I fear that I cannot survive myself.', by: 'Cynthia Chapman' },
+  { quote: 'Even if you were a burden to bear, I would gladly carry you. You are my friend.' },
+  { quote: "It's going to be okay, but it's going to be different." },
 ];

@@ -40,7 +40,7 @@ const imageFor = (file?: string) => {
               {item.quote && (
                 <div class="p-7 sm:p-8">
                   <span class="display block text-6xl leading-none text-rose-glow" aria-hidden="true">“</span>
-                  <blockquote class="serif-italic -mt-4 text-2xl leading-snug">{tr(item.quote, lang)}</blockquote>
+                  <blockquote class="-mt-4 font-display text-[1.4rem] leading-normal font-normal">{tr(item.quote, lang)}</blockquote>
                   {item.by && (
                     <figcaption class="mt-5 text-sm text-muted">
                       {item.by}

@@ -4,9 +4,9 @@ import type { Text } from '@/i18n';
  * Content for the Lists, Photography and Travel pages.
  * A list's `id` is its address on the page (/lists#best-books); homepage cards in
  * src/data/homeLists.ts use it to link to the list. A list with no items yet shows
- * "Under construction".
+ * "Under construction". Titles and items can be { en: '…', es: '…' } for the Spanish site.
  */
-export type List = { id?: string; title: string; items: string[] };
+export type List = { id?: string; title: Text; items: Text[] };
 
 /** Subtitle at the top of the /lists page, and where it links to */
 export const listsText = {
@@ -29,18 +29,55 @@ export const lists: List[] = [
       'My Husband — Maud Ventura',
     ],
   },
-  { id: 'best-documentaries', title: 'Craziest documentaries ever', items: [] },
-  { id: 'seattle-eats', title: 'Best places to eat in Seattle', items: [] },
-  { id: 'robbed-of-the-oscar', title: 'Films that were robbed of the Oscar', items: [] },
   {
-    title: 'Books that changed how I think',
-    items: [],
+    id: 'best-documentaries',
+    title: 'Craziest documentaries ever',
+    items: [
+      'Beyond Utopia (2023)',
+      'Kings of Tupelo (2024)',
+      'Untold: Chess Mates (2026)',
+      'Maternal Instinct (2026)',
+      'You Can See Everything (2026)',
+      'A Toxic Love Story (2026)',
+      "Death of the Pastor's Wife (2026)",
+      'The Florence Cassez Affair (2022)',
+      'Unknown Number: The High School Catfish (2022)',
+      'Turning Point: 9/11 and the War on Terror (2021)',
+      'Gladbeck: The Hostage Crisis (2022)',
+      'Take Care of Maya (2023)',
+      'Vatican Girl (2022)',
+    ],
   },
   {
-    title: 'Places I still need to go',
-    items: [],
+    id: 'seattle-eats',
+    title: 'Best places to eat in Seattle',
+    items: ['Ramen DANBO', 'Sonora Carne Asada House', 'Umi Sake House', 'JOEY', 'Earls Kitchen + Bar', "Von's 1000 Spirits", 'Tacos Cuadra'],
   },
-  { title: 'Best days of the week', items: [] },
+  {
+    id: 'robbed-of-the-oscar',
+    title: 'Films that were robbed of the Oscar',
+    items: [
+      'Sinners (2025)',
+      'The Phoenician Scheme (2025)',
+      'Manchester by the Sea (2016)',
+      'Mad Max: Fury Road (2015)',
+      'Hidden Figures (2016)',
+      'Lady Bird (2017)',
+      'Dune (2021)',
+    ],
+  },
+  {
+    title: { en: 'Best days of the week', es: 'Los mejores días de la semana' },
+    items: [
+      { en: 'Saturday', es: 'Sábado' },
+      { en: 'Friday', es: 'Viernes' },
+      { en: 'Wednesday', es: 'Miércoles' },
+      { en: 'Thursday', es: 'Jueves' },
+      { en: 'Tuesday', es: 'Martes' },
+      { en: 'Monday', es: 'Lunes' },
+      { en: 'Sunday', es: 'Domingo' },
+    ],
+  },
   { title: 'My bucket list', items: [] },
 ];
 
