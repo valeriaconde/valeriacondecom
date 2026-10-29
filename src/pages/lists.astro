@@ -1,7 +1,10 @@
 ---
 import Base from '@/layouts/Base.astro';
 import PageHeader from '@/components/PageHeader.astro';
-import { lists } from '@/data/life';
+import { lists, listsText } from '@/data/life';
+import { langOf, tr } from '@/i18n';
+
+const lang = langOf(Astro.url);
 ---
 
 <Base title="Lists">
@@ -9,23 +12,28 @@ import { lists } from '@/data/life';
     eyebrow="Lists"
     title="Lists"
     accent="(obviously)"
-    lead="Because lists are a perfectly valid form of writing. Updated whenever I feel like it."
+    lead={tr(listsText.lead, lang)}
+    leadHref={listsText.leadHref}
   />
 
   <section class="container-x pb-32">
     <div class="columns-1 gap-6 md:columns-2 [&>*]:mb-6">
       {
         lists.map((list) => (
-          <div class="card break-inside-avoid p-8" data-reveal>
+          <div id={list.id} class="card break-inside-avoid scroll-mt-24 p-8" data-reveal>
             <h2 class="display-sm mb-6">{list.title}</h2>
-            <ol class="space-y-3" data-reveal-stagger="0.06">
-              {list.items.map((item, i) => (
-                <li class="flex gap-4 text-muted">
-                  <span class="display w-5 shrink-0 text-rose">{i + 1}</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ol>
+            {list.items.length > 0 ? (
+              <ol class="space-y-3" data-reveal-stagger="0.06">
+                {list.items.map((item, i) => (
+                  <li class="flex gap-4 text-muted">
+                    <span class="display w-5 shrink-0 text-rose">{i + 1}</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p class="serif-italic text-muted">{tr(listsText.empty, lang)}</p>
+            )}
           </div>
         ))
       }

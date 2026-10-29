@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { inspiration, inspirationText } from '@/data/inspiration';
+import { langOf, tr } from '@/i18n';
+
+const lang = langOf(Astro.url);
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/inspiration/*.{jpg,jpeg,png,webp,avif}', { eager: true });
+const imageFor = (file?: string) => {
+  if (!file) return undefined;
+  const img = images[`/src/assets/inspiration/${file}`]?.default;
+  if (!img) throw new Error(`Inspiration image "${file}" not found in src/assets/inspiration/`);
+  return img;
+};
+---
+
+<Base title={tr(inspirationText.title, lang)} description={tr(inspirationText.lead, lang)}>
+  <PageHeader title={tr(inspirationText.title, lang)} lead={tr(inspirationText.lead, lang)} />
+
+  <section class="container-x pb-32">
+    <div class="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
+      {
+        inspiration.map((item) => {
+          const image = imageFor(item.image);
+          return (
+            <figure class="tile break-inside-avoid !justify-start" data-reveal>
+              {image && (
+                <Image
+                  src={image}
+                  alt={item.alt ? tr(item.alt, lang) : ''}
+                  width={900}
+                  widths={[400, 700, 900]}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  class="w-full"
+                />
+              )}
+              {item.quote && (
+                <div class="p-7 sm:p-8">
+                  <span class="display block text-6xl leading-none text-rose-glow" aria-hidden="true">“</span>
+                  <blockquote class="serif-italic -mt-4 text-2xl leading-snug">{tr(item.quote, lang)}</blockquote>
+                  {item.by && (
+                    <figcaption class="mt-5 text-sm text-muted">
+                      {item.by}
+                      {item.source && <>, <em>{tr(item.source, lang)}</em></>}
+                    </figcaption>
+                  )}
+                </div>
+              )}
+            </figure>
+          );
+        })
+      }
+    </div>
+  </section>
+</Base>

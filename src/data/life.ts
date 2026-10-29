@@ -1,72 +1,47 @@
-/** Content for the Lists, Photography and Travel pages. */
-export type List = { title: string; items: string[] };
+import type { Text } from '@/i18n';
+
+/**
+ * Content for the Lists, Photography and Travel pages.
+ * A list's `id` is its address on the page (/lists#best-books); homepage cards in
+ * src/data/listCards.ts use it to link to the list. A list with no items yet shows
+ * "Under construction".
+ */
+export type List = { id?: string; title: string; items: string[] };
+
+/** Subtitle at the top of the /lists page, and where it links to */
+export const listsText = {
+  lead: { en: 'Wanna fight me about it?', es: '¿Difieres? Peleemos.' } as Text,
+  leadHref: '/contact',
+  /** Shown in place of a list that has no items yet */
+  empty: { en: 'Under construction', es: 'En construcción' } as Text,
+};
 
 export const lists: List[] = [
   {
-    title: 'Books that changed how I think',
+    id: 'best-books',
+    title: 'My favorite books ever',
     items: [
-      'The Order of Things — Foucault',
-      'Thinking, Fast and Slow — Kahneman',
-      'The Master and His Emissary — Iain McGilchrist',
-      'How to Write a Sentence — Stanley Fish',
-      "A Room of One's Own — Virginia Woolf",
-      'The Shock Doctrine — Naomi Klein',
+      'Milkman — Anna Burns',
+      'Drive Your Plow Over the Bones of the Dead — Olga Tokarczuk',
+      'Dogs of Summer — Andrea Abreu',
+      'My Brilliant Friend — Elena Ferrante',
+      'I Who Have Never Known Men — Jacqueline Harpman',
+      'My Husband — Maud Ventura',
     ],
   },
+  { id: 'best-documentaries', title: "Best documentaries I've seen", items: [] },
+  { id: 'seattle-eats', title: 'Best places to eat in Seattle', items: [] },
+  { id: 'robbed-of-the-oscar', title: 'Films that were robbed of the Oscar', items: [] },
   {
-    title: "Things I want to learn before I'm 35",
-    items: [
-      "Play the piano — properly, not just 'Für Elise'",
-      'Speak Portuguese fluently',
-      'Sail a small boat',
-      'Develop my own film photographs',
-      'Cook a proper French tart',
-      'Finish a novel',
-    ],
+    title: 'Books that changed how I think',
+    items: [],
   },
   {
     title: 'Places I still need to go',
-    items: [
-      'Kyoto in cherry blossom season',
-      'Oaxaca, Mexico',
-      'Porto, Portugal',
-      'The Lofoten Islands, Norway',
-      'Istanbul',
-      'Tbilisi, Georgia',
-      'Patagonia',
-    ],
+    items: [],
   },
-  {
-    title: 'Films I want to rewatch every year',
-    items: [
-      'Certified Copy — Kiarostami',
-      'Mulholland Drive — Lynch',
-      'Portrait of a Lady on Fire — Sciamma',
-      'Stalker — Tarkovsky',
-      'The Grand Budapest Hotel — Anderson',
-    ],
-  },
-  {
-    title: 'Sentences I keep coming back to',
-    items: [
-      '"The only way out is through." — Robert Frost',
-      '"We are all just walking each other home." — Ram Dass',
-      '"In the middle of difficulty lies opportunity." — Einstein (possibly apocryphal)',
-      '"Not all those who wander are lost." — Tolkien',
-      '"Tell me, what is it you plan to do / with your one wild and precious life?" — Mary Oliver',
-    ],
-  },
-  {
-    title: "Albums I'd put on a desert island",
-    items: [
-      'Fetch the Bolt Cutters — Fiona Apple',
-      'Blue — Joni Mitchell',
-      'Carrie & Lowell — Sufjan Stevens',
-      'Dummy — Portishead',
-      'Illinois — Sufjan Stevens',
-      'Rumours — Fleetwood Mac',
-    ],
-  },
+  { title: 'Best days of the week', items: [] },
+  { title: 'My bucket list', items: [] },
 ];
 
 /**

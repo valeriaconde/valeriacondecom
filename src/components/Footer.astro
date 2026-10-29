@@ -20,11 +20,7 @@ import { site, socials, nav } from '@/data/site';
         <p class="mono mb-4 text-muted">Pages</p>
         <ul class="space-y-1.5">
           {nav.map((l) => <li><a href={l.href} class="link-line">{l.label}</a></li>)}
-          <li><a href="/rankings" class="link-line">Rankings</a></li>
-          <li><a href="/lists" class="link-line">Lists</a></li>
-          <li><a href="/travel" class="link-line">Travel</a></li>
-          <li><a href="/photography" class="link-line">Photography</a></li>
-          <li><a href="/recommendations" class="link-line">Recommendations</a></li>
+          <!-- Hidden for now: Travel and Photography (src/pages/_travel.astro, _photography.astro) -->
         </ul>
       </div>
       <div>

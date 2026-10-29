@@ -1,37 +1,31 @@
 ---
 import Base from '@/layouts/Base.astro';
+import { Image } from 'astro:assets';
 import PageHeader from '@/components/PageHeader.astro';
-import { intro, threads, timeline } from '@/data/about';
+import { bio, timeline } from '@/data/about';
+import { langOf, tr } from '@/i18n';
+import portrait from '@/assets/hero.jpg';
+
+const lang = langOf(Astro.url);
 ---
 
 <Base title="About">
   <PageHeader eyebrow="About" title="Valeria" accent="Conde" />
 
   <section class="container-x grid gap-12 pb-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-20">
-    <!-- Portrait placeholder: swap for a real photo with <Image> when you have one -->
     <div data-reveal>
-      <div class="swatch flex aspect-[4/5] max-w-sm items-center justify-center" style="--tint: var(--color-rose-soft)">
-        <span class="display relative z-10 text-8xl text-rose" data-float><span data-float-inner class="inline-block">VC</span></span>
-      </div>
-      <p class="mono mt-4 text-muted">Law · Code · Literature</p>
+      <Image
+        src={portrait}
+        alt="Valeria Conde"
+        width={800}
+        widths={[400, 600, 800]}
+        sizes="(min-width: 1024px) 24rem, 100vw"
+        class="aspect-[4/5] w-full max-w-sm rounded-[28px] object-cover object-[50%_12%]"
+      />
     </div>
 
-    <div class="space-y-6 text-lg leading-relaxed" data-reveal-stagger="0.12">
-      {intro.map((p, i) => <p class:list={[i === 0 && 'display-sm !leading-snug']}>{p}</p>)}
-    </div>
-  </section>
-
-  <section class="border-y border-line bg-paper-2">
-    <div class="container-x grid divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0" data-reveal-stagger="0.12">
-      {
-        threads.map((t, i) => (
-          <div class="py-12 sm:px-8 sm:py-16 first:sm:pl-0 last:sm:pr-0">
-            <p class="mono mb-6 text-rose">0{i + 1}</p>
-            <h2 class="display-md mb-4">{t.title}</h2>
-            <p class="text-muted">{t.body}</p>
-          </div>
-        ))
-      }
+    <div data-reveal>
+      <p class="display-sm serif-italic text-muted">{tr(bio, lang)}</p>
     </div>
   </section>
 
@@ -41,13 +35,24 @@ import { intro, threads, timeline } from '@/data/about';
       <span class="absolute top-2 bottom-2 left-[5px] w-px bg-line" aria-hidden="true"></span>
       <span class="absolute top-2 bottom-2 left-[5px] w-px origin-top bg-rose" data-grow-line aria-hidden="true"></span>
       {
-        timeline.map(({ year, event }) => (
-          <li class="relative grid gap-1 pb-12 pl-10 last:pb-0 sm:grid-cols-[6rem_1fr] sm:gap-8" data-reveal>
-            <span class="absolute top-2 left-0 size-[11px] rounded-full border-2 border-rose bg-paper" />
-            <span class="display text-2xl text-rose">{year}</span>
-            <span class="text-lg">{event}</span>
-          </li>
-        ))
+        timeline.map(({ year, event, link }) => {
+          const [before, after] = link ? event.split(link.text) : [event];
+          return (
+            <li class="relative grid gap-1 pb-12 pl-10 last:pb-0 sm:grid-cols-[6rem_1fr] sm:gap-8" data-reveal>
+              <span class="absolute top-2 left-0 size-[11px] rounded-full border-2 border-rose bg-paper" />
+              <span class="display text-2xl text-rose">{year}</span>
+              <span class="text-lg">
+                {before}
+                {link && (
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" class="link-line">
+                    {link.text}
+                  </a>
+                )}
+                {after}
+              </span>
+            </li>
+          );
+        })
       }
     </ol>
   </section>

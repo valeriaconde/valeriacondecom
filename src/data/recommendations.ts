@@ -1,44 +1,22 @@
-export type Item = { title: string; creator: string; note: string; year?: string };
+import type { Text } from '@/i18n';
 
-export const recommendations: { title: string; items: Item[] }[] = [
-  {
-    title: 'Books',
-    items: [
-      { title: 'The Goldfinch', creator: 'Donna Tartt', note: 'A heist novel disguised as a meditation on beauty and loss. One of the great ones.' },
-      { title: 'Lincoln in the Bardo', creator: 'George Saunders', note: 'Formally unlike anything else. Heartbreaking in the best possible way.' },
-      { title: 'The Remains of the Day', creator: 'Kazuo Ishiguro', note: 'About repression and regret told through the quietest possible narrator.' },
-      { title: 'Gilead', creator: 'Marilynne Robinson', note: 'A letter from a dying father to his young son. The writing is devastating.' },
-      { title: 'A Little Life', creator: 'Hanya Yanagihara', note: "Enormous and brutal and unlike anything I've read. Not for everyone." },
-    ],
-  },
-  {
-    title: 'Films',
-    items: [
-      { title: 'Certified Copy', creator: 'Abbas Kiarostami', year: '2010', note: 'A film about authenticity that is itself a copy of nothing.' },
-      { title: 'Portrait of a Lady on Fire', creator: 'Céline Sciamma', year: '2019', note: 'Perfect in almost every frame. About looking and being looked at.' },
-      { title: 'Arrival', creator: 'Denis Villeneuve', year: '2016', note: 'The best science fiction film about language ever made.' },
-      { title: 'Paterson', creator: 'Jim Jarmusch', year: '2016', note: 'A film about the poetry in ordinary life. Nothing happens and everything does.' },
-      { title: 'The Favourite', creator: 'Yorgos Lanthimos', year: '2018', note: 'Vicious and funny and impeccably designed.' },
-    ],
-  },
-  {
-    title: 'Music',
-    items: [
-      { title: 'Fetch the Bolt Cutters', creator: 'Fiona Apple', year: '2020', note: 'The album I return to most. Dense, furious, completely original.' },
-      { title: 'Punisher', creator: 'Phoebe Bridgers', year: '2020', note: "Quiet devastation. I've cried to this more than I care to admit." },
-      { title: 'abysskiss', creator: 'Adrianne Lenker', year: '2018', note: "Solo folk at its most intimate. Like reading someone's diary." },
-      { title: 'Norman Fucking Rockwell!', creator: 'Lana Del Rey', year: '2019', note: 'Surprisingly literary. Sublimely Californian.' },
-      { title: 'Carrie & Lowell', creator: 'Sufjan Stevens', year: '2015', note: 'Grief as a sound. Not easy listening but deeply necessary.' },
-    ],
-  },
-  {
-    title: 'Shows',
-    items: [
-      { title: 'Succession', creator: 'Jesse Armstrong', note: 'The best writing on television in years. Shakespearean in disguise.' },
-      { title: 'The Bear', creator: 'Christopher Storer', note: 'Season one is a masterclass in sustained tension.' },
-      { title: 'Fleabag', creator: 'Phoebe Waller-Bridge', note: 'Two series. Perfect from start to finish.' },
-      { title: 'I May Destroy You', creator: 'Michaela Coel', note: 'Formally daring and emotionally ruthless. One of the bravest things made for TV.' },
-      { title: 'Severance', creator: 'Dan Erickson', note: 'The best metaphor for work-life balance ever committed to screen.' },
-    ],
-  },
+/**
+ * Things shown on /recommendations, in this order.
+ * `image` is the item's picture: put it in src/assets/recommendations/ and write its filename
+ * (a cut-out PNG with a transparent background looks best). `note` is optional and can be { en: '…', es: '…' }.
+ */
+export type Recommendation = { name: string; maker: string; image: string; note?: Text };
+
+/** Subtitle at the top of /recommendations */
+export const recommendationsText = {
+  lead: { en: 'Dump of things you need to try', es: 'Dump de cosas que tienes que probar' } as Text,
+};
+
+export const recommendations: Recommendation[] = [
+  { name: 'Smoked salmon', maker: 'Kirkland Signature', image: 'kirkland-salmon.png', note: { en: 'This salmon changed the way I eat entirely.', es: 'Este salmón cambió toda mi dieta.' } },
+  { name: 'Heavy Merino yarn', maker: 'Knitting for Olive', image: 'knitting-for-olive.png', note: { en: 'Soft, cheap, 100% merino wool.', es: 'Suave, barato, 100% lana merino.' } },
+  { name: 'Age Proteom Advanced Serum', maker: 'Institut Esthederm', image: 'esthederm-serum.png', note: { en: "I've been using this for years.", es: 'Llevo años usándolo.' } },
+  { name: 'Gel ink pen', maker: 'MUJI', image: 'muji-pen.png', note: { en: 'The best journaling pen ever.', es: 'La mejor pluma.' } },
+  { name: 'Air purifier', maker: 'Levoit', image: 'levoit-purifier.png', note: { en: 'How did I live without this?', es: '¿Cómo viví sin esto?' } },
+  { name: 'Drive Your Plow Over the Bones of the Dead', maker: 'Olga Tokarczuk', image: 'drive-your-plow.png', note: { en: 'One of my favorite books last year.', es: 'Uno de mis libros favoritos del año pasado.' } },
 ];
