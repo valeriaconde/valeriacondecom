@@ -12,7 +12,7 @@ import type { Text } from '@/i18n';
 export type Inspiration = { quote?: Text; by?: string; source?: Text; image?: string; alt?: Text };
 
 export const inspirationText = {
-  title: { en: 'Get inspired', es: 'Inspírate' } as Text,
+  title: { en: 'Get inspired', es: 'Inspiración' } as Text,
   /** Subtitle at the top of the page */
   lead: { en: 'Words I think about sometimes.', es: 'Palabras en las que pienso a veces.' } as Text,
 };

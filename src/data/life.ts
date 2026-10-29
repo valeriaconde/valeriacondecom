@@ -3,7 +3,7 @@ import type { Text } from '@/i18n';
 /**
  * Content for the Lists, Photography and Travel pages.
  * A list's `id` is its address on the page (/lists#best-books); homepage cards in
- * src/data/listCards.ts use it to link to the list. A list with no items yet shows
+ * src/data/homeLists.ts use it to link to the list. A list with no items yet shows
  * "Under construction".
  */
 export type List = { id?: string; title: string; items: string[] };
@@ -19,7 +19,7 @@ export const listsText = {
 export const lists: List[] = [
   {
     id: 'best-books',
-    title: 'My favorite books ever',
+    title: 'My favorite books all time',
     items: [
       'Milkman — Anna Burns',
       'Drive Your Plow Over the Bones of the Dead — Olga Tokarczuk',
@@ -29,7 +29,7 @@ export const lists: List[] = [
       'My Husband — Maud Ventura',
     ],
   },
-  { id: 'best-documentaries', title: "Best documentaries I've seen", items: [] },
+  { id: 'best-documentaries', title: 'Craziest documentaries ever', items: [] },
   { id: 'seattle-eats', title: 'Best places to eat in Seattle', items: [] },
   { id: 'robbed-of-the-oscar', title: 'Films that were robbed of the Oscar', items: [] },
   {

@@ -5,10 +5,9 @@ import LatelyTeaser from '@/components/LatelyTeaser.astro';
 import { getPresents } from '@/lib/presents';
 import { showPresentsOnHomepage, presentsHome, homepagePresents } from '@/data/presents';
 import { langOf, tr } from '@/i18n';
-import { listCards, listCardsText } from '@/data/listCards';
+import { homeLists, homeListsText } from '@/data/homeLists';
 import { lists } from '@/data/life';
 import { inspiration, inspirationText } from '@/data/inspiration';
-import type { ImageMetadata } from 'astro';
 import { roles } from '@/data/site';
 import heroPhoto from '@/assets/hero.jpg';
 
@@ -27,17 +26,9 @@ const lang = langOf(Astro.url);
 // Read out in full by screen readers, since the visible words rotate
 const roleWords = roles.map((r) => tr(r, lang));
 const roleList = `${roleWords.slice(0, -1).join(', ')} ${lang === 'es' ? 'y' : '&'} ${roleWords.at(-1)}.`;
-const listCardImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/lists/*.{jpg,jpeg,png,webp,avif}', { eager: true });
-const listCardImage = (file?: string) => {
-  if (!file) return undefined;
-  const img = listCardImages[`/src/assets/lists/${file}`]?.default;
-  if (!img) throw new Error(`List card image "${file}" not found in src/assets/lists/`);
-  return img;
-};
-const listFor = (id?: string) => {
-  if (!id) return undefined;
+const listFor = (id: string) => {
   const list = lists.find((l) => l.id === id);
-  if (!list) throw new Error(`listCards: no list with id "${id}" in src/data/life.ts`);
+  if (!list) throw new Error(`homeLists: no list with id "${id}" in src/data/life.ts`);
   return list;
 };
 const allPresents = showPresentsOnHomepage ? await getPresents() : [];
@@ -97,10 +88,17 @@ const presentPreviews = showPresentsOnHomepage
     </div>
   </section>
 
+  <!-- ── Lately teaser ─────────────────────────────────────── -->
+  <section class="container-x py-16 sm:py-24" aria-label="Lately">
+    <div data-reveal>
+      <LatelyTeaser />
+    </div>
+  </section>
+
   <!-- ── Presents (temporary: turn off in src/data/presents.ts) ── -->
   {
     presentPreviews.length > 0 && (
-      <section class="container-x py-16 sm:py-24" aria-labelledby="presents-title">
+      <section class="container-x pb-16 sm:pb-24" aria-labelledby="presents-title">
         <a href="/presents" data-pop-group class="tile group grid !bg-rose-soft p-6 sm:p-12 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-12" data-reveal>
           <div>
             <h2 id="presents-title" class="display-lg max-w-xl !text-[clamp(2.6rem,5vw,4.6rem)]">
@@ -139,56 +137,38 @@ const presentPreviews = showPresentsOnHomepage
     )
   }
 
-  <!-- ── Lately teaser ─────────────────────────────────────── -->
-  <section class="container-x pb-16 sm:pb-24" aria-label="Lately">
-    <div data-reveal>
-      <LatelyTeaser />
-    </div>
-  </section>
-
   <!-- ── Lists ────────────────────────────────────────────── -->
   <section class="container-x pb-24 sm:pb-32" aria-labelledby="lists-title">
     <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <h2 id="lists-title" class="display-lg" data-split>
-          {tr(listCardsText.title, lang)}<span class="glow-dot">.</span>
+          {tr(homeListsText.title, lang)}<span class="glow-dot">.</span>
         </h2>
-        <p class="lead mt-5 max-w-md" data-reveal>{tr(listCardsText.intro, lang)}</p>
+        <p class="lead mt-5 max-w-md" data-reveal>{tr(homeListsText.intro, lang)}</p>
       </div>
       <div data-reveal>
         <a href="/lists" class="btn btn-ghost" data-magnetic>
-          {tr(listCardsText.button, lang)} <span class="arrow" aria-hidden="true">→</span>
+          {tr(homeListsText.button, lang)} <span class="arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </div>
-    <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4" data-stair>
+    <!-- The titles get typed out one per line when the section scrolls into view (script below) -->
+    <ol class="tw-sheet grid gap-2 sm:gap-3" data-typewriter>
       {
-        listCards.map((r) => {
-          const image = listCardImage(r.image);
-          const list = listFor(r.list);
+        homeLists.map((h) => {
+          const list = listFor(h.list);
+          const title = tr(h.title, lang);
           return (
-            <a href={list ? `/lists#${list.id}` : '/lists'} class="tile group min-h-56 !justify-end p-5 sm:min-h-72 sm:p-6" style={`background:${r.tint}`}>
-              {image && (
-                <>
-                  <Image
-                    src={image}
-                    alt=""
-                    width={900}
-                    widths={[300, 600, 900]}
-                    sizes="(min-width: 1024px) 25vw, 50vw"
-                    class="absolute inset-0 size-full object-cover transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
-                  />
-                  <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-ink/10 to-transparent" aria-hidden="true" />
-                </>
-              )}
-              <span class:list={['relative', image && 'text-white']} data-stair-text>
-                <span class="display-md block !text-[clamp(1.3rem,2.4vw,2rem)]">{tr(r.title, lang)}</span>
-              </span>
-            </a>
+            <li>
+              <a href={`/lists#${list.id}`} class="tw-line" aria-label={title}>
+                <span class="tw-full">{title}</span>
+                <span class="tw-typed" aria-hidden="true" />
+              </a>
+            </li>
           );
         })
       }
-    </div>
+    </ol>
   </section>
 
   <!-- ── Get inspired: quotes hidden behind a blur, they come a little into focus on hover ── -->
@@ -229,7 +209,141 @@ const presentPreviews = showPresentsOnHomepage
 
   </Base>
 
+
+<script>
+  /**
+   * Lists typewriter: when the section scrolls into view, the titles are typed one after
+   * another and stay. Then the cursor waits on an empty line below, as if the next list is
+   * on its way. Pointing at a title moves the cursor to the end of it.
+   */
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  document.querySelectorAll<HTMLElement>('[data-typewriter]').forEach((sheet) => {
+    const lines = [...sheet.querySelectorAll<HTMLAnchorElement>('.tw-line')].map((line) => ({
+      line,
+      text: line.querySelector('.tw-full')!.textContent ?? '',
+      typed: line.querySelector<HTMLElement>('.tw-typed')!,
+    }));
+    const caret = document.createElement('span');
+    caret.className = 'tw-caret';
+    caret.setAttribute('aria-hidden', 'true');
+    const next = document.createElement('li');
+    next.className = 'tw-next';
+    next.setAttribute('aria-hidden', 'true');
+    sheet.append(next);
+
+    let done = false;
+    const park = (el: HTMLElement) => el.append(caret);
+    lines.forEach(({ line, typed }) => {
+      const here = () => done && park(typed);
+      const away = () => done && park(next);
+      line.addEventListener('mouseenter', here);
+      line.addEventListener('focus', here);
+      line.addEventListener('mouseleave', away);
+      line.addEventListener('blur', away);
+    });
+
+    if (reduceMotion) {
+      park(next);
+      done = true;
+      return;
+    }
+
+    sheet.classList.add('tw-armed');
+    const typeAll = async () => {
+      sheet.classList.add('tw-typing');
+      for (const { text, typed } of lines) {
+        const shown = document.createTextNode('');
+        typed.replaceChildren(shown, caret);
+        for (let k = 1; k <= text.length; k++) {
+          shown.textContent = text.slice(0, k);
+          await sleep(text[k - 1] === ' ' ? 90 : 38 + Math.random() * 55);
+        }
+        await sleep(260);
+      }
+      sheet.classList.remove('tw-typing');
+      park(next);
+      done = true;
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        typeAll();
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(sheet);
+  });
+</script>
+
 <style>
+  /* Lists: typewriter. Without JS the titles just show; the script adds .tw-armed and types them */
+  .tw-line {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(1.4rem, 3.4vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    transition: color 0.3s;
+  }
+  .tw-line:hover,
+  .tw-line:focus-visible {
+    color: var(--color-rose);
+  }
+  .tw-line:hover .tw-full,
+  .tw-line:hover .tw-typed,
+  .tw-line:focus-visible .tw-typed {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.12em;
+    text-decoration-color: var(--color-rose-glow);
+  }
+  .tw-typed {
+    display: none;
+  }
+  /* the full title stays underneath, invisible, so each line keeps its size while it's typed */
+  .tw-armed .tw-full {
+    visibility: hidden;
+  }
+  .tw-armed .tw-typed {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+  /* .tw-next and .tw-caret are added by the script, so they need :global to get these styles */
+  :global(.tw-next) {
+    min-height: calc(clamp(1.4rem, 3.4vw, 2.5rem) * 1.15);
+    font-size: clamp(1.4rem, 3.4vw, 2.5rem);
+    line-height: 1.15;
+  }
+  :global(.tw-caret) {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.92em;
+    margin-left: 0.05em;
+    /* takes up no room, so parking it at the end of a title never pushes a word onto the next line */
+    margin-right: -0.11em;
+    vertical-align: -0.1em;
+    background: var(--color-rose-glow);
+    animation: tw-blink 1s steps(1) infinite;
+  }
+  .tw-typing :global(.tw-caret) {
+    animation: none;
+  }
+  @keyframes tw-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.tw-caret) {
+      animation: none;
+    }
+  }
   /* Get inspired: the quotes stay out of focus, sharpening a little on hover */
   .inspired-words {
     filter: blur(14px);
