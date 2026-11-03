@@ -39,6 +39,11 @@ const alternate = new URL(otherLangPath(Astro.url), site.url).href;
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
+    {
+      import.meta.env.PROD && site.goatcounter && (
+        <script is:inline async data-goatcounter={`https://${site.goatcounter}.goatcounter.com/count`} src="https://gc.zgo.at/count.js" />
+      )
+    }
   </head>
   <body class="flex min-h-dvh flex-col overflow-x-clip">
     <a

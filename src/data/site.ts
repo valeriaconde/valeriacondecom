@@ -4,6 +4,11 @@ export const site = {
   name: 'Valeria Conde',
   url: 'https://valeriaconde.com',
   description: 'Software engineer, lawyer, writer, reader, tennis player, & friend.',
+  /**
+   * Private visit stats (goatcounter.com, no cookies). Your site code: the "val" in val.goatcounter.com.
+   * Leave empty to turn counting off. Only the live site counts, not `npm run dev`.
+   */
+  goatcounter: 'valeriacondecom',
 };
 
 /** `es` is the Spanish name, shown in the menu and footer on the Spanish site. */
