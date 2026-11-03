@@ -53,10 +53,21 @@ export const presents: Present[] = [
     price: '$4,950,000',
   },
   {
+    title: 'Vain Saint Metal Nails 01 in Chrome',
+    url: 'https://www.vainsaint.com/products/metal-nails-01-chrome',
+    price: '$160',
+  },
+  {
     title: 'Songmont Medium Song Bag in Lucky Red',
     url: 'https://songmontofficial.com/products/medium-song-bag-lucky-red',
     image: 'songmont-medium-song-bag-lucky-red.webp',
     price: '$429',
+  },
+  {
+    title: 'Onitsuka Tiger Mexico 66 TGRS',
+    url: 'https://www.onitsukatiger.com/jp/en-gl/product/mexico-66-tgrs/1182a678_001.html',
+    image: 'onitsuka-mexico-66-tgrs.jpg',
+    price: '$190',
   },
   {
     title: 'ChiaoGoo Twist Shorties needle set, blue (2 & 3 inch)',
@@ -69,6 +80,24 @@ export const presents: Present[] = [
     url: 'https://www.amazon.com/dp/B0BLCMCLNF',
     image: 'chiaogoo-twist-shorties-yellow.webp',
     price: '$86.40',
+  },
+  {
+    title: 'iPhone Duo 256GB in Star White, unlocked',
+    url: 'https://www.apple.com/shop/buy-iphone/iphone-duo/7.6-inch-display-256gb-star-white-unlocked',
+    image: 'iphone-duo-star-white.png',
+    price: '$1,999',
+  },
+  {
+    title: 'Wilson Marta Dress',
+    url: 'https://au.wilson.com/pages/the-marta-dress',
+    image: 'wilson-marta-dress.avif',
+    price: '$160',
+  },
+  {
+    title: "Oasis (What's the Story) Morning Glory? vinyl",
+    url: 'https://www.target.com/p/oasis-whats-the-story-morning-glory-vinyl/-/A-1004107038',
+    image: 'oasis-morning-glory-vinyl.jpg',
+    price: '$37.04',
   },
   {
     title: 'DOYO wireless guitar controllers for Clone Hero, black & white pair',
@@ -143,6 +172,18 @@ export const presents: Present[] = [
     price: '$128',
   },
   {
+    title: 'SMISKI Hippers blind box figure',
+    url: 'https://smiski.com/e/products/hippers-series/',
+    image: 'smiski-hippers.png',
+    price: '$14',
+  },
+  {
+    title: 'Casio Baby-G BG-169CM-4 watch',
+    url: 'https://www.casio.com/us/watches/babyg/product.BG-169CM-4/',
+    image: 'casio-baby-g-bg-169cm-4.avif',
+    price: '$145',
+  },
+  {
     title: 'Dyson Airstrait straightener in Ceramic Pink/Rose Gold',
     url: 'https://www.dyson.com/hair-care/hair-straighteners/airstrait/ceramic-pink-rose-gold',
     image: 'dyson-airstrait-pink-rose-gold.png',
@@ -215,18 +256,6 @@ export const presents: Present[] = [
     price: '$128',
   },
   {
-    title: 'lululemon jersey training long-sleeve shirt, wordmark',
-    url: 'https://shop.lululemon.com/p/jersey-training-long-sleeve-shirt-wordmark/uxn6sd8em4?color=0002&sz=11.5%2C14',
-    image: 'lululemon-jersey-long-sleeve.png',
-    price: '$68',
-  },
-  {
-    title: 'lululemon All It Takes long-sleeve shirt',
-    url: 'https://shop.lululemon.com/p/all-it-takes-long-sleeve-shirt/lyvc95b7v8?color=76995',
-    image: 'lululemon-all-it-takes-long-sleeve.png',
-    price: '$78',
-  },
-  {
     title: 'Homedics 2-in-1 portable steam sauna + red light wands',
     url: 'https://www.costco.com/p/-/homedics-2-in-1-portable-steam-sauna-red-light-wands/4201023343',
     image: 'homedics-steam-sauna-red-light.webp',
@@ -255,6 +284,12 @@ export const presents: Present[] = [
     url: 'https://www.birkenstock.com/us/amsterdam-wrapped-suede-leather/amsterdamwrapped-suede-suedeleather-S005650-eva-u_01729.html',
     image: 'birkenstock-amsterdam-suede.jpg',
     price: '$134.95',
+  },
+  {
+    title: 'HOKA Ora Recovery Slide 3',
+    url: 'https://www.hoka.com/en/us/all-gender-footwear/ora-recovery-slide-3/1135061.html',
+    image: 'hoka-ora-recovery-slide-3.png',
+    price: '$60',
   },
   {
     title: 'MAM Originals Pleiadians gold drop face jewelry',

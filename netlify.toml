@@ -19,3 +19,11 @@
   from = "/es/life"
   to = "/es/"
   status = 301
+[[redirects]]
+  from = "/get-inspired"
+  to = "/memes"
+  status = 301
+[[redirects]]
+  from = "/es/get-inspired"
+  to = "/es/memes"
+  status = 301

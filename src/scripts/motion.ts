@@ -23,6 +23,8 @@
  *                              inside a card fades from faint to full as the card arrives
  *   data-pop-group           → its [data-pop] cards start as one small stack, pop up and fan out
  *                              into their spots (plays once; see pops() for the data-fan-* values)
+ *   data-snap-feed           → the page snaps one screen at a time (memes), so smooth scrolling
+ *                              stays off there; the snapping itself is CSS on that page
  *
  * When the visitor prefers reduced motion, nothing animates and everything is shown as is.
  */
@@ -341,7 +343,7 @@ function headerOnScroll() {
 
 function init() {
   if (reduceMotion) return;
-  smoothScroll();
+  if (!document.querySelector('[data-snap-feed]')) smoothScroll();
   // Pinned sections first, so everything below them measures positions with the pin in place
   stairs();
   splitHeadlines();

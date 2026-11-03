@@ -10,13 +10,13 @@ import Lists from '../lists.astro';
 import Recommendations from '../recommendations.astro';
 import Contact from '../contact.astro';
 import Presents from '../presents.astro';
-import GetInspired from '../get-inspired.astro';
+import Memes from '../memes.astro';
 import Lately from '../lately/index.astro';
 import Post from '../lately/[id].astro';
 import { postPaths } from '@/lib/lately';
 
 export async function getStaticPaths() {
-  const pages = ['', 'about', 'lists', 'recommendations', 'contact', 'presents', 'get-inspired', 'lately'];
+  const pages = ['', 'about', 'lists', 'recommendations', 'contact', 'presents', 'memes', 'lately'];
   const posts = await postPaths();
   return [
     ...pages.map((page) => ({ params: { slug: page || undefined }, props: { page } })),
@@ -31,7 +31,7 @@ const components = {
   recommendations: Recommendations,
   contact: Contact,
   presents: Presents,
-  'get-inspired': GetInspired,
+  memes: Memes,
   lately: Lately,
   post: Post,
 } as const;

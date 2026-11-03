@@ -44,8 +44,9 @@ const lang = langOf(Astro.url);
               <span class="text-lg">
                 {before}
                 {link && (
-                  <a href={link.href} target="_blank" rel="noopener noreferrer" class="link-line">
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" class="group text-rose underline decoration-rose-glow decoration-2 underline-offset-4 transition-colors hover:text-rose-deep hover:decoration-rose-deep">
                     {link.text}
+                    <span class="arrow-ne ml-0.5 text-[0.8em]" aria-hidden="true">↗</span>
                   </a>
                 )}
                 {after}

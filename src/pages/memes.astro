@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { memesText } from '@/data/memes';
+import { getMemes } from '@/lib/memes';
+import { langOf, tr } from '@/i18n';
+
+const lang = langOf(Astro.url);
+const memes = getMemes();
+---
+
+<Base title={tr(memesText.title, lang)}>
+  {
+    memes.length === 0 ? (
+      <>
+        <PageHeader title={tr(memesText.title, lang)} />
+        <p class="container-x lead pb-32">{tr(memesText.empty, lang)}</p>
+      </>
+    ) : (
+      <>
+        <h1 class="sr-only">{tr(memesText.title, lang)}</h1>
+        <!-- One meme per screen; the page snaps from one to the next (styles below) -->
+        <div data-snap-feed>
+          {memes.map((meme, i) => {
+            const alt = meme.alt ? tr(meme.alt, lang) : '';
+            return (
+              <section class="meme-slide container-x flex flex-col items-center justify-center gap-4" aria-label={`${i + 1} / ${memes.length}`}>
+                {meme.video ? (
+                  <video src={meme.video} controls playsinline preload="metadata" class="meme-media" aria-label={alt || undefined} />
+                ) : meme.image?.format === 'gif' ? (
+                  // GIFs skip the optimizer so they keep moving
+                  <img src={meme.image.src} width={meme.image.width} height={meme.image.height} alt={alt} loading={i < 2 ? 'eager' : 'lazy'} class="meme-media" />
+                ) : meme.image ? (
+                  <Image src={meme.image} alt={alt} width={1100} widths={[600, 900, 1100]} sizes="(min-width: 640px) 600px, 100vw" loading={i < 2 ? 'eager' : 'lazy'} class="meme-media" />
+                ) : null}
+                {meme.caption && <p class="max-w-xl text-center text-muted">{tr(meme.caption, lang)}</p>}
+                {meme.quote && (
+                  <figure class="max-w-2xl text-center">
+                    <span class="display block text-7xl leading-none text-rose-glow" aria-hidden="true">“</span>
+                    <blockquote class="-mt-4 font-display text-[clamp(1.6rem,4vw,2.6rem)] leading-snug font-normal">{tr(meme.quote, lang)}</blockquote>
+                    {meme.by && (
+                      <figcaption class="mt-6 text-muted">
+                        {meme.by}
+                        {meme.source && <>, <em>{tr(meme.source, lang)}</em></>}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
+                <p class="mono text-xs text-muted" aria-hidden="true">{i + 1} / {memes.length}</p>
+              </section>
+            );
+          })}
+        </div>
+      </>
+    )
+  }
+</Base>
+
+<style>
+  /* Snap a whole screen at a time, and never skip past a meme on a fast swipe */
+  :global(html:has([data-snap-feed])) {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+  }
+  .meme-slide {
+    height: 100svh;
+    /* room for the fixed header on top */
+    padding-top: 84px;
+    padding-bottom: 20px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  /* the footer is the last stop */
+  :global(html:has([data-snap-feed]) footer) {
+    scroll-snap-align: end;
+  }
+  .meme-media {
+    display: block;
+    width: auto;
+    max-width: min(100%, 600px);
+    height: auto;
+    max-height: calc(100svh - 84px - 20px - 3rem);
+    object-fit: contain;
+    border-radius: var(--radius-tile);
+    box-shadow: 0 24px 60px -30px rgb(29 24 32 / 0.45);
+  }
+</style>

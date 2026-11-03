@@ -21,7 +21,7 @@ const isActive = (href: string) => current === href || current.startsWith(`${hre
           nav.map((l) => (
             <li>
               <a href={l.href} class="link-line py-2 transition-colors hover:text-ink aria-[current=page]:text-ink" aria-current={isActive(l.href) ? 'page' : undefined}>
-                {l.label}
+                {lang === 'es' ? (l.es ?? l.label) : l.label}
               </a>
             </li>
           ))
@@ -56,7 +56,7 @@ const isActive = (href: string) => current === href || current.startsWith(`${hre
       class="relative z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-card md:hidden"
       aria-expanded="false"
       aria-controls="mobile-menu"
-      aria-label="Menu"
+      aria-label={lang === 'es' ? 'Menú' : 'Menu'}
     >
       <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
     </button>
@@ -68,11 +68,11 @@ const isActive = (href: string) => current === href || current.startsWith(`${hre
   <nav class="container-x flex flex-1 flex-col justify-between pt-28 pb-10" aria-label="Mobile">
     <ul class="space-y-1">
       {
-        [{ label: 'Home', href: '/' }, ...nav].map((l, i) => (
+        [{ label: 'Home', es: 'Inicio', href: '/' }, ...nav].map((l, i) => (
           <li class="mobile-item" style={`--i:${i}`}>
             <a href={l.href} class="display flex items-baseline gap-4 py-2 text-[2.8rem] leading-none">
               <span class="text-xs text-muted">0{i + 1}</span>
-              {l.label}
+              {lang === 'es' ? (l.es ?? l.label) : l.label}
             </a>
           </li>
         ))

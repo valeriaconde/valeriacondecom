@@ -17,7 +17,7 @@ const imageFor = (file: string) => {
 ---
 
 <Base title="Recommendations" description="Things Valeria Conde recommends.">
-  <PageHeader eyebrow="Curated" title="Things I" accent="love" lead={tr(recommendationsText.lead, lang)} />
+  <PageHeader eyebrow="Curated" title={lang === 'es' ? 'Cosas que me' : 'Things I'} accent={lang === 'es' ? 'encantan' : 'love'} lead={tr(recommendationsText.lead, lang)} />
 
   <section class="container-x pb-32">
     <ul class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3" data-reveal-stagger="0.08">
