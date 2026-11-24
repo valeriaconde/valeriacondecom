@@ -62,6 +62,11 @@ export const wishLists: { name: string; gifts: { title: string; url?: string; im
         image: 'marisol-yonex-tenis.jpg',
         note: 'tenis',
       },
+      {
+        title: 'Lentes de sol Bronson, TOM FORD Eyewear',
+        url: 'https://www.farfetch.com/mx/shopping/women/tom-ford-eyewear-bronson-sunglasses-item-19447832.aspx',
+        image: 'marisol-tom-ford-bronson.jpg',
+      },
     ],
   },
   {
@@ -88,6 +93,33 @@ export const wishLists: { name: string; gifts: { title: string; url?: string; im
         url: 'https://www.amazon.com.mx/dp/B0FSRJVY22?psc=1',
         image: 'oscar-envase-creatina.jpg',
         note: 'ESTE envase para creatina',
+      },
+      {
+        title: 'Almohada cervical de mariposa',
+        url: 'https://vt.tiktok.com/ZSsYrj5Gn/',
+        image: 'oscar-almohada-cervical.jpg',
+        note: 'quiero dos',
+      },
+      {
+        title: 'TwoPackBag',
+        url: 'https://www.facebook.com/share/v/1Jk3ihg9oc/',
+        image: 'oscar-twopackbag.jpg',
+      },
+      {
+        title: 'Funda ergonómica 4 en 1 para laptop Casena',
+        url: 'https://www.instagram.com/p/DfStXqjgWcM/',
+        image: 'oscar-funda-casena.jpg',
+        note: 'color gris o negra, no colores llamativos',
+      },
+      {
+        title: 'Almohada CerviFlex',
+        url: 'https://www.facebook.com/share/v/19t2HjvB9E/',
+        image: 'oscar-cerviflex.jpg',
+      },
+      {
+        title: 'Modern Classic Flat Cap, Damon & West',
+        url: 'https://www.facebook.com/share/1MfqJfgaqX/',
+        image: 'oscar-boina.jpg',
       },
     ],
   },
